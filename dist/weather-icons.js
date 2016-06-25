@@ -100,6 +100,28 @@ var WeatherIcon =
 	  Array(numSunbursts).fill().forEach(function (_, i) {
 	    return buildSunburst().attr('transform', 'rotate(' + i * 360 / numSunbursts + ', ' + centre.x + ', ' + centre.y + ')');
 	  });
+
+	  var cloudBaseY = 150;
+	  var cloudRightRadius = 25;
+	  var cloudLeftRadius = 20;
+	  var cloudColour = 'grey';
+	  var cloudCentreWidth = 55;
+	  var cloudCentreStart = 50;
+
+	  function drawCloudCircle(centre, radius) {
+	    return drawCircle(centre, radius).attr('fill', cloudColour);
+	  }
+
+	  drawCloudCircle({ x: cloudCentreStart, y: cloudBaseY - cloudLeftRadius }, cloudLeftRadius);
+	  drawCloudCircle({ x: cloudCentreStart + cloudCentreWidth, y: cloudBaseY - cloudRightRadius }, cloudRightRadius);
+	  drawCloudCircle({ x: cloudCentreStart + cloudCentreWidth / 2, y: cloudBaseY - 1.65 * cloudRightRadius }, 1.1 * cloudRightRadius);
+	  svg.append('rect').attr({
+	    x: cloudCentreStart,
+	    y: cloudBaseY - cloudLeftRadius * 2,
+	    width: cloudCentreWidth,
+	    height: cloudLeftRadius * 2,
+	    fill: cloudColour
+	  });
 	}
 
 	draw('body');

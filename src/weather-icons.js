@@ -45,6 +45,28 @@ export function draw(selector, width = 200, height = 200) {
   Array(numSunbursts).fill().forEach((_, i) => (
     buildSunburst().attr('transform', `rotate(${i * 360 / numSunbursts}, ${centre.x}, ${centre.y})`)
   ));
+
+  const cloudBaseY = 150;
+  const cloudRightRadius = 25;
+  const cloudLeftRadius = 20;
+  const cloudColour = 'grey';
+  const cloudCentreWidth = 55;
+  const cloudCentreStart = 50;
+
+  function drawCloudCircle(centre, radius) {
+    return drawCircle(centre, radius).attr('fill', cloudColour);
+  }
+
+  drawCloudCircle({ x: cloudCentreStart, y: cloudBaseY - cloudLeftRadius}, cloudLeftRadius);
+  drawCloudCircle({ x: cloudCentreStart + cloudCentreWidth, y: cloudBaseY - cloudRightRadius}, cloudRightRadius);
+  drawCloudCircle({ x: cloudCentreStart + cloudCentreWidth / 2, y: cloudBaseY - 1.65 * cloudRightRadius}, 1.1 * cloudRightRadius);
+  svg.append('rect').attr({
+    x: cloudCentreStart,
+    y: cloudBaseY - cloudLeftRadius * 2,
+    width: cloudCentreWidth,
+    height: cloudLeftRadius * 2,
+    fill: cloudColour
+  });
 }
 
 draw('body');
