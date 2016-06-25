@@ -67,6 +67,30 @@ export function draw(selector, width = 200, height = 200) {
     height: cloudLeftRadius * 2,
     fill: cloudColour
   });
+
+
+  const raindropRadius = cloudLeftRadius / 2.5;
+  const raindropColour = 'dodgerblue';
+
+  drawRaindrop({ x: cloudCentreStart + cloudCentreWidth / 4, y: cloudBaseY + raindropRadius * 2 });
+  drawRaindrop({ x: cloudCentreStart + cloudCentreWidth * 0.75, y: cloudBaseY + raindropRadius * 1 });
+
+  function drawRaindrop(raindropCentre) {
+    drawCircle(raindropCentre, raindropRadius).attr('fill', raindropColour);
+
+    drawIsoscelesTriangle(raindropRadius * 1.9, -raindropRadius * 2, { x: raindropCentre.x - raindropRadius * 0.95, y: raindropCentre.y  - raindropRadius * 0.325 })
+      .attr('fill', raindropColour)
+      .attr('transform', `rotate(15, ${raindropCentre.x}, ${raindropCentre.y})`);
+  }
+
+  function drawIsoscelesTriangle(width, height, bottomLeft) {
+    return svg.append('polyline')
+      .attr('points', [
+        `${bottomLeft.x} ${bottomLeft.y}`,
+        `${bottomLeft.x + width / 2} ${bottomLeft.y + height}`,
+        `${bottomLeft.x + width} ${bottomLeft.y}`
+      ]);
+    }
 }
 
 draw('body');
