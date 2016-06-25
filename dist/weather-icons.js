@@ -50,7 +50,7 @@ var WeatherIcon =
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.log = undefined;
+	exports.draw = draw;
 
 	var _d = __webpack_require__(1);
 
@@ -58,9 +58,51 @@ var WeatherIcon =
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-	console.log('test');
+	function draw(selector) {
+	  var width = arguments.length <= 1 || arguments[1] === undefined ? 200 : arguments[1];
+	  var height = arguments.length <= 2 || arguments[2] === undefined ? 200 : arguments[2];
 
-	var log = exports.log = console.log.bind(console);
+	  var svg = d3.select(selector).append('svg').attr('width', width).attr('height', height);
+
+	  var centre = { x: width / 2, y: height / 2 };
+	  var colour = 'gold';
+
+	  function drawCircle(_ref, radius) {
+	    var x = _ref.x;
+	    var y = _ref.y;
+
+	    return svg.append('circle').attr('cx', x).attr('cy', y).attr('r', radius);
+	  };
+
+	  var innerRadius = 20;
+	  var outerRadius = 30;
+
+	  drawCircle(centre, innerRadius).attr('fill', colour);
+
+	  function buildSunburst() {
+	    var sunburstPoint = {
+	      x: centre.x + outerRadius * Math.sin(0),
+	      y: centre.y - outerRadius * Math.cos(0)
+	    };
+
+	    var halfSunburstPointWidth = 2;
+
+	    return svg.append('rect').attr({
+	      x: sunburstPoint.x - halfSunburstPointWidth,
+	      y: sunburstPoint.y - halfSunburstPointWidth,
+	      width: halfSunburstPointWidth * 2,
+	      height: outerRadius - innerRadius,
+	      fill: colour
+	    });
+	  };
+
+	  var numSunbursts = 12;
+	  Array(numSunbursts).fill().forEach(function (_, i) {
+	    return buildSunburst().attr('transform', 'rotate(' + i * 360 / numSunbursts + ', ' + centre.x + ', ' + centre.y + ')');
+	  });
+	}
+
+	draw('body');
 
 /***/ },
 /* 1 */
