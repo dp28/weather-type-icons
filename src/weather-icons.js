@@ -73,7 +73,7 @@ export function draw(selector, width = 200, height = 200) {
   const raindropColour = 'dodgerblue';
 
   drawSnowflake({ x: cloudCentreStart + cloudCentreWidth * 0.75, y: cloudBaseY }, raindropRadius * 1.2);
-  drawRaindrop({ x: cloudCentreStart + cloudCentreWidth / 4, y: cloudBaseY + raindropRadius });
+  drawHail({ x: cloudCentreStart + cloudCentreWidth / 4, y: cloudBaseY + raindropRadius });
 
   function drawRaindrop(raindropCentre) {
     drawCircle(raindropCentre, raindropRadius).attr('fill', raindropColour);
@@ -91,6 +91,11 @@ export function draw(selector, width = 200, height = 200) {
         `${bottomLeft.x + width} ${bottomLeft.y}`
       ]);
   };
+
+  function drawHail(centre) {
+    const colour = 'white';
+    drawCircle(centre, raindropRadius).attr('fill', colour);
+  }
 
   function drawSnowflake(centre, radius) {
     const innerRadius = radius / 2;

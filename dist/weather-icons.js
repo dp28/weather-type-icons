@@ -127,7 +127,7 @@ var WeatherIcon =
 	  var raindropColour = 'dodgerblue';
 
 	  drawSnowflake({ x: cloudCentreStart + cloudCentreWidth * 0.75, y: cloudBaseY }, raindropRadius * 1.2);
-	  drawRaindrop({ x: cloudCentreStart + cloudCentreWidth / 4, y: cloudBaseY + raindropRadius });
+	  drawHail({ x: cloudCentreStart + cloudCentreWidth / 4, y: cloudBaseY + raindropRadius });
 
 	  function drawRaindrop(raindropCentre) {
 	    drawCircle(raindropCentre, raindropRadius).attr('fill', raindropColour);
@@ -138,6 +138,11 @@ var WeatherIcon =
 	  function drawIsoscelesTriangle(width, height, bottomLeft) {
 	    return svg.append('polyline').attr('points', [bottomLeft.x + ' ' + bottomLeft.y, bottomLeft.x + width / 2 + ' ' + (bottomLeft.y + height), bottomLeft.x + width + ' ' + bottomLeft.y]);
 	  };
+
+	  function drawHail(centre) {
+	    var colour = 'white';
+	    drawCircle(centre, raindropRadius).attr('fill', colour);
+	  }
 
 	  function drawSnowflake(centre, radius) {
 	    var innerRadius = radius / 2;
