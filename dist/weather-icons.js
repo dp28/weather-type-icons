@@ -126,18 +126,44 @@ var WeatherIcon =
 	  var raindropRadius = cloudLeftRadius / 2.5;
 	  var raindropColour = 'dodgerblue';
 
-	  drawRaindrop({ x: cloudCentreStart + cloudCentreWidth / 4, y: cloudBaseY + raindropRadius * 2 });
-	  drawRaindrop({ x: cloudCentreStart + cloudCentreWidth * 0.75, y: cloudBaseY + raindropRadius * 1 });
+	  drawSnowflake({ x: cloudCentreStart + cloudCentreWidth * 0.75, y: cloudBaseY }, raindropRadius * 1.2);
+	  drawRaindrop({ x: cloudCentreStart + cloudCentreWidth / 4, y: cloudBaseY + raindropRadius });
 
 	  function drawRaindrop(raindropCentre) {
 	    drawCircle(raindropCentre, raindropRadius).attr('fill', raindropColour);
 
 	    drawIsoscelesTriangle(raindropRadius * 1.9, -raindropRadius * 2, { x: raindropCentre.x - raindropRadius * 0.95, y: raindropCentre.y - raindropRadius * 0.325 }).attr('fill', raindropColour).attr('transform', 'rotate(15, ' + raindropCentre.x + ', ' + raindropCentre.y + ')');
-	  }
+	  };
 
 	  function drawIsoscelesTriangle(width, height, bottomLeft) {
 	    return svg.append('polyline').attr('points', [bottomLeft.x + ' ' + bottomLeft.y, bottomLeft.x + width / 2 + ' ' + (bottomLeft.y + height), bottomLeft.x + width + ' ' + bottomLeft.y]);
-	  }
+	  };
+
+	  function drawSnowflake(centre, radius) {
+	    var innerRadius = radius / 2;
+	    var colour = 'white';
+
+	    var numSnowflakeParts = 6;
+	    Array(numSnowflakeParts).fill().forEach(function (_, i) {
+	      return buildSnowflakePart(centre, innerRadius, innerRadius).attr('transform', 'rotate(' + i * 360 / numSnowflakeParts + ', ' + centre.x + ', ' + centre.y + ')').attr('fill', colour);
+	    });
+	  };
+
+	  function buildSnowflakePart(centre, radius, height) {
+	    var point = {
+	      x: centre.x,
+	      y: centre.y
+	    };
+
+	    var halfWidth = height / 3;
+
+	    return svg.append('rect').attr({
+	      x: point.x - halfWidth,
+	      y: point.y,
+	      width: halfWidth * 2,
+	      height: height * 2
+	    });
+	  };
 	}
 
 	draw('body');
