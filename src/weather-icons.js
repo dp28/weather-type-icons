@@ -1,5 +1,7 @@
 import * as d3 from 'd3';
 
+import {colours} from './colours';
+
 export function draw(selector, width = 200, height = 200) {
   const svg = d3
     .select(selector)
@@ -8,7 +10,6 @@ export function draw(selector, width = 200, height = 200) {
     .attr('height', height);
 
   const centre = { x: width / 2, y: height / 2 };
-  const sunColour = 'gold';
 
   function drawCircle({ x, y }, radius) {
     return svg
@@ -22,7 +23,7 @@ export function draw(selector, width = 200, height = 200) {
   const outerRadius = 30;
 
   drawCircle(centre, innerRadius)
-    .attr('fill', sunColour);
+    .attr('fill', colours.yellow);
 
   function buildSunburst() {
      const sunburstPoint = {
@@ -37,7 +38,7 @@ export function draw(selector, width = 200, height = 200) {
       y: sunburstPoint.y - halfSunburstPointWidth,
       width: halfSunburstPointWidth * 2,
       height: outerRadius - innerRadius,
-      fill: sunColour
+      fill: colours.yellow
     });
   };
 
@@ -49,12 +50,11 @@ export function draw(selector, width = 200, height = 200) {
   const cloudBaseY = 150;
   const cloudRightRadius = 25;
   const cloudLeftRadius = 20;
-  const cloudColour = 'grey';
   const cloudCentreWidth = 55;
   const cloudCentreStart = 50;
 
   function drawCloudCircle(centre, radius) {
-    return drawCircle(centre, radius).attr('fill', cloudColour);
+    return drawCircle(centre, radius).attr('fill', colours.darkGrey);
   }
 
   drawCloudCircle({ x: cloudCentreStart, y: cloudBaseY - cloudLeftRadius}, cloudLeftRadius);
@@ -65,11 +65,10 @@ export function draw(selector, width = 200, height = 200) {
     y: cloudBaseY - cloudLeftRadius * 2,
     width: cloudCentreWidth,
     height: cloudLeftRadius * 2,
-    fill: cloudColour
+    fill: colours.darkGrey
   });
 
   const raindropRadius = cloudLeftRadius / 2.5;
-  const raindropColour = 'dodgerblue';
 
   drawRaindrop({ x: cloudCentreStart + cloudCentreWidth * 0.75, y: cloudBaseY }, raindropRadius * 1.2);
   drawRaindrop({ x: cloudCentreStart + cloudCentreWidth / 4, y: cloudBaseY + raindropRadius });
@@ -81,10 +80,10 @@ export function draw(selector, width = 200, height = 200) {
   }, lightningWidth);
 
   function drawRaindrop(raindropCentre) {
-    drawCircle(raindropCentre, raindropRadius).attr('fill', raindropColour);
+    drawCircle(raindropCentre, raindropRadius).attr('fill', colours.blue);
 
     drawIsoscelesTriangle(raindropRadius * 1.9, -raindropRadius * 2, { x: raindropCentre.x - raindropRadius * 0.95, y: raindropCentre.y  - raindropRadius * 0.325 })
-      .attr('fill', raindropColour)
+      .attr('fill', colours.blue)
       .attr('transform', `rotate(15, ${raindropCentre.x}, ${raindropCentre.y})`);
   };
 
@@ -112,23 +111,21 @@ export function draw(selector, width = 200, height = 200) {
         `${left.x + fifthWidth} ${left.y + height}`,
         `${left.x + 2 * fifthWidth} ${left.y}`
       ])
-      .attr('fill', sunColour);
+      .attr('fill', colours.yellow);
   }
 
   function drawHail(centre) {
-    const colour = 'white';
-    drawCircle(centre, raindropRadius).attr('fill', colour);
+    drawCircle(centre, raindropRadius).attr('fill', colours.white);
   }
 
   function drawSnowflake(centre, radius) {
     const innerRadius = radius / 2;
-    const colour = 'white';
 
     const numSnowflakeParts = 6;
     Array(numSnowflakeParts).fill().forEach((_, i) => (
       buildSnowflakePart(centre, innerRadius, innerRadius)
         .attr('transform', `rotate(${i * 360 / numSnowflakeParts}, ${centre.x}, ${centre.y})`)
-        .attr('fill', colour)
+        .attr('fill', colours.white)
     ));
   };
 
