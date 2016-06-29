@@ -6,8 +6,9 @@ export function draw(selector, width = 200, height = 200) {
   const svg = d3
     .select(selector)
     .append('svg')
-    .attr('width', width)
-    .attr('height', height);
+    .attr('viewBox', `0 0 ${width} ${height}`)
+    .attr('preserveAspectRatio', 'xMidYMid meet')
+    .append('g');
 
   const centre = { x: width / 2, y: height / 2 };
 

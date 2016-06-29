@@ -64,7 +64,7 @@ var WeatherIcon =
 	  var width = arguments.length <= 1 || arguments[1] === undefined ? 200 : arguments[1];
 	  var height = arguments.length <= 2 || arguments[2] === undefined ? 200 : arguments[2];
 
-	  var svg = d3.select(selector).append('svg').attr('width', width).attr('height', height);
+	  var svg = d3.select(selector).append('svg').attr('viewBox', '0 0 ' + width + ' ' + height).attr('preserveAspectRatio', 'xMidYMid meet').append('g');
 
 	  var centre = { x: width / 2, y: height / 2 };
 
