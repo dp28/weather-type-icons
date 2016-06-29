@@ -65,7 +65,7 @@ var WeatherIcon =
 	  var svg = d3.select(selector).append('svg').attr('width', width).attr('height', height);
 
 	  var centre = { x: width / 2, y: height / 2 };
-	  var colour = 'gold';
+	  var sunColour = 'gold';
 
 	  function drawCircle(_ref, radius) {
 	    var x = _ref.x;
@@ -77,7 +77,7 @@ var WeatherIcon =
 	  var innerRadius = 20;
 	  var outerRadius = 30;
 
-	  drawCircle(centre, innerRadius).attr('fill', colour);
+	  drawCircle(centre, innerRadius).attr('fill', sunColour);
 
 	  function buildSunburst() {
 	    var sunburstPoint = {
@@ -92,7 +92,7 @@ var WeatherIcon =
 	      y: sunburstPoint.y - halfSunburstPointWidth,
 	      width: halfSunburstPointWidth * 2,
 	      height: outerRadius - innerRadius,
-	      fill: colour
+	      fill: sunColour
 	    });
 	  };
 
@@ -126,8 +126,14 @@ var WeatherIcon =
 	  var raindropRadius = cloudLeftRadius / 2.5;
 	  var raindropColour = 'dodgerblue';
 
-	  drawSnowflake({ x: cloudCentreStart + cloudCentreWidth * 0.75, y: cloudBaseY }, raindropRadius * 1.2);
-	  drawHail({ x: cloudCentreStart + cloudCentreWidth / 4, y: cloudBaseY + raindropRadius });
+	  drawRaindrop({ x: cloudCentreStart + cloudCentreWidth * 0.75, y: cloudBaseY }, raindropRadius * 1.2);
+	  drawRaindrop({ x: cloudCentreStart + cloudCentreWidth / 4, y: cloudBaseY + raindropRadius });
+
+	  var lightningWidth = cloudCentreWidth / 2;
+	  drawLightning({
+	    x: cloudCentreStart + cloudCentreWidth / 4,
+	    y: cloudBaseY + lightningWidth / 4
+	  }, lightningWidth);
 
 	  function drawRaindrop(raindropCentre) {
 	    drawCircle(raindropCentre, raindropRadius).attr('fill', raindropColour);
@@ -138,6 +144,12 @@ var WeatherIcon =
 	  function drawIsoscelesTriangle(width, height, bottomLeft) {
 	    return svg.append('polyline').attr('points', [bottomLeft.x + ' ' + bottomLeft.y, bottomLeft.x + width / 2 + ' ' + (bottomLeft.y + height), bottomLeft.x + width + ' ' + bottomLeft.y]);
 	  };
+
+	  function drawLightning(left, width) {
+	    var height = width;
+	    var fifthWidth = width / 5;
+	    return svg.append('polyline').attr('points', [left.x + ' ' + left.y, left.x + fifthWidth + ' ' + (left.y - height), left.x + 3 * fifthWidth + ' ' + (left.y - height), left.x + width / 2 + ' ' + (left.y - height / 2), left.x + width + ' ' + (left.y - height / 2), left.x + fifthWidth + ' ' + (left.y + height), left.x + 2 * fifthWidth + ' ' + left.y]).attr('fill', sunColour);
+	  }
 
 	  function drawHail(centre) {
 	    var colour = 'white';

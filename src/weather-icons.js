@@ -8,7 +8,7 @@ export function draw(selector, width = 200, height = 200) {
     .attr('height', height);
 
   const centre = { x: width / 2, y: height / 2 };
-  const colour = 'gold';
+  const sunColour = 'gold';
 
   function drawCircle({ x, y }, radius) {
     return svg
@@ -22,7 +22,7 @@ export function draw(selector, width = 200, height = 200) {
   const outerRadius = 30;
 
   drawCircle(centre, innerRadius)
-    .attr('fill', colour);
+    .attr('fill', sunColour);
 
   function buildSunburst() {
      const sunburstPoint = {
@@ -37,7 +37,7 @@ export function draw(selector, width = 200, height = 200) {
       y: sunburstPoint.y - halfSunburstPointWidth,
       width: halfSunburstPointWidth * 2,
       height: outerRadius - innerRadius,
-      fill: colour
+      fill: sunColour
     });
   };
 
@@ -68,12 +68,17 @@ export function draw(selector, width = 200, height = 200) {
     fill: cloudColour
   });
 
-
   const raindropRadius = cloudLeftRadius / 2.5;
   const raindropColour = 'dodgerblue';
 
-  drawSnowflake({ x: cloudCentreStart + cloudCentreWidth * 0.75, y: cloudBaseY }, raindropRadius * 1.2);
-  drawHail({ x: cloudCentreStart + cloudCentreWidth / 4, y: cloudBaseY + raindropRadius });
+  drawRaindrop({ x: cloudCentreStart + cloudCentreWidth * 0.75, y: cloudBaseY }, raindropRadius * 1.2);
+  drawRaindrop({ x: cloudCentreStart + cloudCentreWidth / 4, y: cloudBaseY + raindropRadius });
+
+  const lightningWidth = cloudCentreWidth / 2;
+  drawLightning({
+    x: cloudCentreStart + cloudCentreWidth / 4,
+    y: cloudBaseY + lightningWidth / 4
+  }, lightningWidth);
 
   function drawRaindrop(raindropCentre) {
     drawCircle(raindropCentre, raindropRadius).attr('fill', raindropColour);
@@ -84,13 +89,31 @@ export function draw(selector, width = 200, height = 200) {
   };
 
   function drawIsoscelesTriangle(width, height, bottomLeft) {
-    return svg.append('polyline')
+    return svg
+      .append('polyline')
       .attr('points', [
         `${bottomLeft.x} ${bottomLeft.y}`,
         `${bottomLeft.x + width / 2} ${bottomLeft.y + height}`,
         `${bottomLeft.x + width} ${bottomLeft.y}`
       ]);
   };
+
+  function drawLightning(left, width) {
+    const height = width;
+    const fifthWidth = width / 5;
+    return svg
+      .append('polyline')
+      .attr('points', [
+        `${left.x} ${left.y}`,
+        `${left.x + fifthWidth} ${left.y - height}`,
+        `${left.x + 3 * fifthWidth} ${left.y - height}`,
+        `${left.x + width / 2} ${left.y - height / 2}`,
+        `${left.x + width} ${left.y - height / 2}`,
+        `${left.x + fifthWidth} ${left.y + height}`,
+        `${left.x + 2 * fifthWidth} ${left.y}`
+      ])
+      .attr('fill', sunColour);
+  }
 
   function drawHail(centre) {
     const colour = 'white';
