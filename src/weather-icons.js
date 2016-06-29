@@ -19,39 +19,43 @@ export function draw(selector, width = 200, height = 200) {
       .attr('r', radius)
   };
 
-  const innerRadius = 20;
-  const outerRadius = 30;
+  drawSun({ x: centre.x + width * .22, y: centre.y - height * .25 });
 
-  drawCircle(centre, innerRadius)
-    .attr('fill', colours.yellow);
+  function drawSun(centre) {
+    const innerRadius = 30;
+    const outerRadius = 45;
 
-  function buildSunburst() {
-     const sunburstPoint = {
-      x: centre.x + (outerRadius * Math.sin(0)),
-      y: centre.y - (outerRadius * Math.cos(0)),
-    }
+    drawCircle(centre, innerRadius)
+      .attr('fill', colours.yellow);
 
-    const halfSunburstPointWidth = 2;
+    function buildSunburst() {
+       const sunburstPoint = {
+        x: centre.x + (outerRadius * Math.sin(0)),
+        y: centre.y - (outerRadius * Math.cos(0)),
+      }
 
-    return svg.append('rect').attr({
-      x: sunburstPoint.x - halfSunburstPointWidth,
-      y: sunburstPoint.y - halfSunburstPointWidth,
-      width: halfSunburstPointWidth * 2,
-      height: outerRadius - innerRadius,
-      fill: colours.yellow
-    });
-  };
+      const halfSunburstPointWidth = 2;
 
-  const numSunbursts = 12;
-  Array(numSunbursts).fill().forEach((_, i) => (
-    buildSunburst().attr('transform', `rotate(${i * 360 / numSunbursts}, ${centre.x}, ${centre.y})`)
-  ));
+      return svg.append('rect').attr({
+        x: sunburstPoint.x - halfSunburstPointWidth,
+        y: sunburstPoint.y - halfSunburstPointWidth,
+        width: halfSunburstPointWidth * 2,
+        height: outerRadius - innerRadius,
+        fill: colours.yellow
+      });
+    };
 
-  const cloudBaseY = 150;
-  const cloudRightRadius = 25;
-  const cloudLeftRadius = 20;
-  const cloudCentreWidth = 55;
-  const cloudCentreStart = 50;
+    const numSunbursts = 12;
+    Array(numSunbursts).fill().forEach((_, i) => (
+      buildSunburst().attr('transform', `rotate(${i * 360 / numSunbursts}, ${centre.x}, ${centre.y})`)
+    ));
+  }
+
+  const cloudBaseY = 140;
+  const cloudRightRadius = 45;
+  const cloudLeftRadius = 35;
+  const cloudCentreWidth = 110;
+  const cloudCentreStart = 40;
 
   function drawCloudCircle(centre, radius) {
     return drawCircle(centre, radius).attr('fill', colours.darkGrey);
@@ -76,7 +80,7 @@ export function draw(selector, width = 200, height = 200) {
   const lightningWidth = cloudCentreWidth / 2;
   drawLightning({
     x: cloudCentreStart + cloudCentreWidth / 4,
-    y: cloudBaseY + lightningWidth / 4
+    y: cloudBaseY + lightningWidth / 8
   }, lightningWidth);
 
   function drawRaindrop(raindropCentre) {

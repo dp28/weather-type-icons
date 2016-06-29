@@ -75,38 +75,42 @@ var WeatherIcon =
 	    return svg.append('circle').attr('cx', x).attr('cy', y).attr('r', radius);
 	  };
 
-	  var innerRadius = 20;
-	  var outerRadius = 30;
+	  drawSun({ x: centre.x + width * .22, y: centre.y - height * .25 });
 
-	  drawCircle(centre, innerRadius).attr('fill', _colours.colours.yellow);
+	  function drawSun(centre) {
+	    var innerRadius = 30;
+	    var outerRadius = 45;
 
-	  function buildSunburst() {
-	    var sunburstPoint = {
-	      x: centre.x + outerRadius * Math.sin(0),
-	      y: centre.y - outerRadius * Math.cos(0)
+	    drawCircle(centre, innerRadius).attr('fill', _colours.colours.yellow);
+
+	    function buildSunburst() {
+	      var sunburstPoint = {
+	        x: centre.x + outerRadius * Math.sin(0),
+	        y: centre.y - outerRadius * Math.cos(0)
+	      };
+
+	      var halfSunburstPointWidth = 2;
+
+	      return svg.append('rect').attr({
+	        x: sunburstPoint.x - halfSunburstPointWidth,
+	        y: sunburstPoint.y - halfSunburstPointWidth,
+	        width: halfSunburstPointWidth * 2,
+	        height: outerRadius - innerRadius,
+	        fill: _colours.colours.yellow
+	      });
 	    };
 
-	    var halfSunburstPointWidth = 2;
-
-	    return svg.append('rect').attr({
-	      x: sunburstPoint.x - halfSunburstPointWidth,
-	      y: sunburstPoint.y - halfSunburstPointWidth,
-	      width: halfSunburstPointWidth * 2,
-	      height: outerRadius - innerRadius,
-	      fill: _colours.colours.yellow
+	    var numSunbursts = 12;
+	    Array(numSunbursts).fill().forEach(function (_, i) {
+	      return buildSunburst().attr('transform', 'rotate(' + i * 360 / numSunbursts + ', ' + centre.x + ', ' + centre.y + ')');
 	    });
-	  };
+	  }
 
-	  var numSunbursts = 12;
-	  Array(numSunbursts).fill().forEach(function (_, i) {
-	    return buildSunburst().attr('transform', 'rotate(' + i * 360 / numSunbursts + ', ' + centre.x + ', ' + centre.y + ')');
-	  });
-
-	  var cloudBaseY = 150;
-	  var cloudRightRadius = 25;
-	  var cloudLeftRadius = 20;
-	  var cloudCentreWidth = 55;
-	  var cloudCentreStart = 50;
+	  var cloudBaseY = 140;
+	  var cloudRightRadius = 45;
+	  var cloudLeftRadius = 35;
+	  var cloudCentreWidth = 110;
+	  var cloudCentreStart = 40;
 
 	  function drawCloudCircle(centre, radius) {
 	    return drawCircle(centre, radius).attr('fill', _colours.colours.darkGrey);
@@ -131,7 +135,7 @@ var WeatherIcon =
 	  var lightningWidth = cloudCentreWidth / 2;
 	  drawLightning({
 	    x: cloudCentreStart + cloudCentreWidth / 4,
-	    y: cloudBaseY + lightningWidth / 4
+	    y: cloudBaseY + lightningWidth / 8
 	  }, lightningWidth);
 
 	  function drawRaindrop(raindropCentre) {
