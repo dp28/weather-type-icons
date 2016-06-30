@@ -58,15 +58,14 @@ var WeatherIcon =
 
 	var _colours = __webpack_require__(2);
 
+	var _dimensions = __webpack_require__(3);
+
+	var dimensions = _interopRequireWildcard(_dimensions);
+
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function draw(selector) {
-	  var width = arguments.length <= 1 || arguments[1] === undefined ? 100 : arguments[1];
-	  var height = arguments.length <= 2 || arguments[2] === undefined ? 100 : arguments[2];
-
-	  var svg = d3.select(selector).append('svg').attr('viewBox', '0 0 ' + width + ' ' + height).attr('preserveAspectRatio', 'xMidYMid meet').attr('width', 500).append('g');
-
-	  var centre = { x: width / 2, y: height / 2 };
+	  var svg = d3.select(selector).append('svg').attr('viewBox', dimensions.left + ' ' + dimensions.top + ' ' + dimensions.width + ' ' + dimensions.height).attr('preserveAspectRatio', 'xMidYMid meet').attr('width', 500).append('g');
 
 	  function drawCircle(_ref, radius) {
 	    var x = _ref.x;
@@ -75,87 +74,70 @@ var WeatherIcon =
 	    return svg.append('circle').attr('cx', x).attr('cy', y).attr('r', radius);
 	  };
 
-	  drawSun({ x: centre.x + width * .22, y: centre.y - height * .25 });
+	  drawSun();
 
-	  function drawSun(centre) {
-	    var innerRadius = 15;
-	    var outerRadius = 22;
+	  function drawSun() {
+	    var sun = dimensions.sun.small;
 
-	    drawCircle(centre, innerRadius).attr('fill', _colours.colours.yellow);
+	    drawCircle(sun.centre, sun.radius).attr('fill', _colours.colours.yellow);
 
 	    function buildSunburst() {
 	      var sunburstPoint = {
-	        x: centre.x + outerRadius * Math.sin(0),
-	        y: centre.y - outerRadius * Math.cos(0)
+	        x: sun.centre.x + sun.sunburst.radius * Math.sin(0),
+	        y: sun.centre.y - sun.sunburst.radius * Math.cos(0)
 	      };
 
-	      var halfSunburstPointWidth = 1;
+	      var halfSunburstWidth = sun.sunburst.width / 2;
 
 	      return svg.append('rect').attr({
-	        x: sunburstPoint.x - halfSunburstPointWidth,
-	        y: sunburstPoint.y - halfSunburstPointWidth,
-	        width: halfSunburstPointWidth * 2,
-	        height: outerRadius - innerRadius,
+	        x: sunburstPoint.x - halfSunburstWidth,
+	        y: sunburstPoint.y - halfSunburstWidth,
+	        width: sun.sunburst.width,
+	        height: sun.sunburst.radius - sun.radius,
 	        fill: _colours.colours.yellow
 	      });
 	    };
-
-	    var numSunbursts = 12;
-	    Array(numSunbursts).fill().forEach(function (_, i) {
-	      return buildSunburst().attr('transform', 'rotate(' + i * 360 / numSunbursts + ', ' + centre.x + ', ' + centre.y + ')');
+	    Array(sun.sunburst.number).fill().forEach(function (_, i) {
+	      return buildSunburst().attr('transform', 'rotate(' + i * 360 / sun.sunburst.number + ', ' + sun.centre.x + ', ' + sun.centre.y + ')');
 	    });
 	  }
 
-	  var cloudBaseY = 70;
-	  var cloudRightRadius = 23;
-	  var cloudLeftRadius = 18;
-	  var cloudCentreWidth = 55;
-	  var cloudCentreStart = 20;
+	  function drawCloudCircle(_ref2) {
+	    var centre = _ref2.centre;
+	    var radius = _ref2.radius;
 
-	  function drawCloudCircle(centre, radius) {
 	    return drawCircle(centre, radius).attr('fill', _colours.colours.darkGrey);
 	  }
 
-	  drawCloudCircle({ x: cloudCentreStart, y: cloudBaseY - cloudLeftRadius }, cloudLeftRadius);
-	  drawCloudCircle({ x: cloudCentreStart + cloudCentreWidth, y: cloudBaseY - cloudRightRadius }, cloudRightRadius);
-	  drawCloudCircle({ x: cloudCentreStart + cloudCentreWidth / 2, y: cloudBaseY - 1.65 * cloudRightRadius }, 1.1 * cloudRightRadius);
-	  svg.append('rect').attr({
-	    x: cloudCentreStart,
-	    y: cloudBaseY - cloudLeftRadius * 2,
-	    width: cloudCentreWidth,
-	    height: cloudLeftRadius * 2,
-	    fill: _colours.colours.darkGrey
-	  });
+	  dimensions.cloud.circles.forEach(drawCloudCircle);
 
-	  var raindropRadius = cloudLeftRadius / 2.5;
+	  svg.append('rect').attr(dimensions.cloud.rect).attr('fill', _colours.colours.darkGrey);
 
-	  drawRaindrop({ x: cloudCentreStart + cloudCentreWidth * 0.75, y: cloudBaseY }, raindropRadius * 1.2);
-	  drawRaindrop({ x: cloudCentreStart + cloudCentreWidth / 4, y: cloudBaseY + raindropRadius });
+	  drawRaindrop(dimensions.raindrop.firstCentre);
+	  drawRaindrop(dimensions.raindrop.secondCentre);
 
-	  var lightningWidth = cloudCentreWidth / 2;
-	  drawLightning({
-	    x: cloudCentreStart + cloudCentreWidth / 4,
-	    y: cloudBaseY + lightningWidth / 8
-	  }, lightningWidth);
+	  drawLightning();
 
 	  function drawRaindrop(raindropCentre) {
-	    drawCircle(raindropCentre, raindropRadius).attr('fill', _colours.colours.blue);
+	    drawCircle(raindropCentre, dimensions.raindrop.radius).attr('fill', _colours.colours.blue);
 
-	    drawIsoscelesTriangle(raindropRadius * 1.9, -raindropRadius * 2, { x: raindropCentre.x - raindropRadius * 0.95, y: raindropCentre.y - raindropRadius * 0.325 }).attr('fill', _colours.colours.blue).attr('transform', 'rotate(15, ' + raindropCentre.x + ', ' + raindropCentre.y + ')');
+	    drawIsoscelesTriangle(dimensions.raindrop.radius * 1.9, -dimensions.raindrop.radius * 2, { x: raindropCentre.x - dimensions.raindrop.radius * 0.95, y: raindropCentre.y - dimensions.raindrop.radius * 0.325 }).attr('fill', _colours.colours.blue).attr('transform', 'rotate(15, ' + raindropCentre.x + ', ' + raindropCentre.y + ')');
 	  };
 
 	  function drawIsoscelesTriangle(width, height, bottomLeft) {
 	    return svg.append('polyline').attr('points', [bottomLeft.x + ' ' + bottomLeft.y, bottomLeft.x + width / 2 + ' ' + (bottomLeft.y + height), bottomLeft.x + width + ' ' + bottomLeft.y]);
 	  };
 
-	  function drawLightning(left, width) {
+	  function drawLightning() {
+	    var left = dimensions.lightning.centreLeft;
+	    var width = dimensions.lightning.width;
 	    var height = width;
 	    var fifthWidth = width / 5;
 	    return svg.append('polyline').attr('points', [left.x + ' ' + left.y, left.x + fifthWidth + ' ' + (left.y - height), left.x + 3 * fifthWidth + ' ' + (left.y - height), left.x + width / 2 + ' ' + (left.y - height / 2), left.x + width + ' ' + (left.y - height / 2), left.x + fifthWidth + ' ' + (left.y + height), left.x + 2 * fifthWidth + ' ' + left.y]).attr('fill', _colours.colours.yellow);
 	  }
 
 	  function drawHail(centre) {
-	    drawCircle(centre, raindropRadius).attr('fill', _colours.colours.white);
+	    drawCircle(centre, dimensions.raindrop.radius).attr('fill', _colours.colours.white);
 	  }
 
 	  function drawSnowflake(centre, radius) {
@@ -9760,6 +9742,95 @@ var WeatherIcon =
 	  lightGrey: 'lightgrey',
 	  white: 'white',
 	  yellow: 'gold'
+	};
+
+/***/ },
+/* 3 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var top = exports.top = 0;
+	var left = exports.left = 0;
+	var width = exports.width = 100;
+	var height = exports.height = 100;
+
+	var centre = exports.centre = { x: width / 2, y: height / 2 };
+
+	var cloudConstants = {
+	  centreRect: {
+	    bottomLeft: { x: 20, y: 70 },
+	    width: 55
+	  },
+	  leftRadius: 18,
+	  rightRadius: 23
+	};
+
+	var cloud = exports.cloud = {
+	  circles: [{
+	    centre: {
+	      x: cloudConstants.centreRect.bottomLeft.x,
+	      y: cloudConstants.centreRect.bottomLeft.y - cloudConstants.leftRadius
+	    },
+	    radius: cloudConstants.leftRadius
+	  }, {
+	    centre: {
+	      x: cloudConstants.centreRect.bottomLeft.x + cloudConstants.centreRect.width,
+	      y: cloudConstants.centreRect.bottomLeft.y - cloudConstants.rightRadius
+	    },
+	    radius: cloudConstants.rightRadius
+	  }, {
+	    centre: {
+	      x: cloudConstants.centreRect.bottomLeft.x + cloudConstants.centreRect.width / 2,
+	      y: cloudConstants.centreRect.bottomLeft.y - 1.65 * cloudConstants.rightRadius
+	    },
+	    radius: 1.1 * cloudConstants.rightRadius
+	  }],
+	  rect: {
+	    x: cloudConstants.centreRect.bottomLeft.x,
+	    y: cloudConstants.centreRect.bottomLeft.y - cloudConstants.leftRadius * 2,
+	    width: cloudConstants.centreRect.width,
+	    height: cloudConstants.leftRadius * 2
+	  }
+	};
+
+	var sun = exports.sun = {
+	  small: {
+	    radius: 15,
+	    centre: { x: centre.x + 22, y: centre.y - 25 },
+	    sunburst: { width: 2, number: 12, radius: 22 }
+	  }
+	};
+
+	var raindropRadius = 7;
+
+	var snowflake = exports.snowflake = {
+	  radius: raindropRadius * 1.2
+	};
+
+	var raindrop = exports.raindrop = {
+	  radius: raindropRadius,
+	  firstCentre: {
+	    x: cloudConstants.centreRect.bottomLeft.x + cloudConstants.centreRect.width * 0.75,
+	    y: cloudConstants.centreRect.bottomLeft.y
+	  },
+	  secondCentre: {
+	    x: cloudConstants.centreRect.bottomLeft.x + cloudConstants.centreRect.width * 0.25,
+	    y: cloudConstants.centreRect.bottomLeft.y + raindropRadius
+	  }
+	};
+
+	var lightningWidth = cloudConstants.centreRect.width / 2;
+
+	var lightning = exports.lightning = {
+	  width: lightningWidth,
+	  centreLeft: {
+	    x: cloudConstants.centreRect.bottomLeft.x + cloudConstants.centreRect.width / 4,
+	    y: cloudConstants.centreRect.bottomLeft.y + lightningWidth / 8
+	  }
 	};
 
 /***/ }
