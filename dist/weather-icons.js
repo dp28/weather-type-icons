@@ -61,10 +61,10 @@ var WeatherIcon =
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function draw(selector) {
-	  var width = arguments.length <= 1 || arguments[1] === undefined ? 200 : arguments[1];
-	  var height = arguments.length <= 2 || arguments[2] === undefined ? 200 : arguments[2];
+	  var width = arguments.length <= 1 || arguments[1] === undefined ? 100 : arguments[1];
+	  var height = arguments.length <= 2 || arguments[2] === undefined ? 100 : arguments[2];
 
-	  var svg = d3.select(selector).append('svg').attr('viewBox', '0 0 ' + width + ' ' + height).attr('preserveAspectRatio', 'xMidYMid meet').append('g');
+	  var svg = d3.select(selector).append('svg').attr('viewBox', '0 0 ' + width + ' ' + height).attr('preserveAspectRatio', 'xMidYMid meet').attr('width', 500).append('g');
 
 	  var centre = { x: width / 2, y: height / 2 };
 
@@ -78,8 +78,8 @@ var WeatherIcon =
 	  drawSun({ x: centre.x + width * .22, y: centre.y - height * .25 });
 
 	  function drawSun(centre) {
-	    var innerRadius = 30;
-	    var outerRadius = 45;
+	    var innerRadius = 15;
+	    var outerRadius = 22;
 
 	    drawCircle(centre, innerRadius).attr('fill', _colours.colours.yellow);
 
@@ -89,7 +89,7 @@ var WeatherIcon =
 	        y: centre.y - outerRadius * Math.cos(0)
 	      };
 
-	      var halfSunburstPointWidth = 2;
+	      var halfSunburstPointWidth = 1;
 
 	      return svg.append('rect').attr({
 	        x: sunburstPoint.x - halfSunburstPointWidth,
@@ -106,11 +106,11 @@ var WeatherIcon =
 	    });
 	  }
 
-	  var cloudBaseY = 140;
-	  var cloudRightRadius = 45;
-	  var cloudLeftRadius = 35;
-	  var cloudCentreWidth = 110;
-	  var cloudCentreStart = 40;
+	  var cloudBaseY = 70;
+	  var cloudRightRadius = 23;
+	  var cloudLeftRadius = 18;
+	  var cloudCentreWidth = 55;
+	  var cloudCentreStart = 20;
 
 	  function drawCloudCircle(centre, radius) {
 	    return drawCircle(centre, radius).attr('fill', _colours.colours.darkGrey);

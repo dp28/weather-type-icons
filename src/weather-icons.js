@@ -2,12 +2,13 @@ import * as d3 from 'd3';
 
 import {colours} from './colours';
 
-export function draw(selector, width = 200, height = 200) {
+export function draw(selector, width = 100, height = 100) {
   const svg = d3
     .select(selector)
     .append('svg')
     .attr('viewBox', `0 0 ${width} ${height}`)
     .attr('preserveAspectRatio', 'xMidYMid meet')
+    .attr('width', 500)
     .append('g');
 
   const centre = { x: width / 2, y: height / 2 };
@@ -23,8 +24,8 @@ export function draw(selector, width = 200, height = 200) {
   drawSun({ x: centre.x + width * .22, y: centre.y - height * .25 });
 
   function drawSun(centre) {
-    const innerRadius = 30;
-    const outerRadius = 45;
+    const innerRadius = 15;
+    const outerRadius = 22;
 
     drawCircle(centre, innerRadius)
       .attr('fill', colours.yellow);
@@ -35,7 +36,7 @@ export function draw(selector, width = 200, height = 200) {
         y: centre.y - (outerRadius * Math.cos(0)),
       }
 
-      const halfSunburstPointWidth = 2;
+      const halfSunburstPointWidth = 1;
 
       return svg.append('rect').attr({
         x: sunburstPoint.x - halfSunburstPointWidth,
@@ -52,11 +53,11 @@ export function draw(selector, width = 200, height = 200) {
     ));
   }
 
-  const cloudBaseY = 140;
-  const cloudRightRadius = 45;
-  const cloudLeftRadius = 35;
-  const cloudCentreWidth = 110;
-  const cloudCentreStart = 40;
+  const cloudBaseY = 70;
+  const cloudRightRadius = 23;
+  const cloudLeftRadius = 18;
+  const cloudCentreWidth = 55;
+  const cloudCentreStart = 20;
 
   function drawCloudCircle(centre, radius) {
     return drawCircle(centre, radius).attr('fill', colours.darkGrey);
