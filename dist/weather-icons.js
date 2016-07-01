@@ -64,6 +64,8 @@ var WeatherIcon =
 
 	var _raindrop = __webpack_require__(4);
 
+	var _hail = __webpack_require__(6);
+
 	var _svgUtils = __webpack_require__(5);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
@@ -111,7 +113,7 @@ var WeatherIcon =
 	  svg.append('rect').attr(dimensions.cloud.rect).attr('fill', _colours.colours.darkGrey);
 
 	  (0, _raindrop.drawRaindrop)(dimensions.raindrop.firstCentre)(svg);
-	  (0, _raindrop.drawRaindrop)(dimensions.raindrop.secondCentre)(svg);
+	  (0, _hail.drawHail)(dimensions.raindrop.secondCentre)(svg);
 
 	  drawLightning();
 
@@ -121,10 +123,6 @@ var WeatherIcon =
 	    var height = width;
 	    var fifthWidth = width / 5;
 	    return svg.append('polyline').attr('points', [left.x + ' ' + left.y, left.x + fifthWidth + ' ' + (left.y - height), left.x + 3 * fifthWidth + ' ' + (left.y - height), left.x + width / 2 + ' ' + (left.y - height / 2), left.x + width + ' ' + (left.y - height / 2), left.x + fifthWidth + ' ' + (left.y + height), left.x + 2 * fifthWidth + ' ' + left.y]).attr('fill', _colours.colours.yellow);
-	  }
-
-	  function drawHail(centre) {
-	    (0, _svgUtils.drawCircle)(centre, dimensions.raindrop.radius)(svg).attr('fill', _colours.colours.white);
 	  }
 
 	  function drawSnowflake(centre, radius) {
@@ -9892,6 +9890,29 @@ var WeatherIcon =
 	    return svg.append('circle').attr('cx', x).attr('cy', y).attr('r', radius);
 	  };
 	};
+
+/***/ },
+/* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.drawHail = drawHail;
+
+	var _colours = __webpack_require__(2);
+
+	var _dimensions = __webpack_require__(3);
+
+	var _svgUtils = __webpack_require__(5);
+
+	function drawHail(centre) {
+	  return function (svg) {
+	    return (0, _svgUtils.drawCircle)(centre, _dimensions.raindrop.radius)(svg).attr('fill', _colours.colours.white);
+	  };
+	}
 
 /***/ }
 /******/ ]);

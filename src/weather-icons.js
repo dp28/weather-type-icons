@@ -3,6 +3,8 @@ import * as d3 from 'd3';
 import {colours}       from './colours';
 import * as dimensions from './dimensions';
 import {drawRaindrop}  from './precipitation/raindrop';
+import {drawHail}      from './precipitation/hail';
+
 import {drawCircle}    from './utils/svg-utils';
 
 export function draw(selector) {
@@ -55,7 +57,7 @@ export function draw(selector) {
     .attr('fill', colours.darkGrey);
 
   drawRaindrop(dimensions.raindrop.firstCentre)(svg);
-  drawRaindrop(dimensions.raindrop.secondCentre)(svg);
+  drawHail(dimensions.raindrop.secondCentre)(svg);
 
   drawLightning();
 
@@ -76,10 +78,6 @@ export function draw(selector) {
         `${left.x + 2 * fifthWidth} ${left.y}`
       ])
       .attr('fill', colours.yellow);
-  }
-
-  function drawHail(centre) {
-    drawCircle(centre, dimensions.raindrop.radius)(svg).attr('fill', colours.white);
   }
 
   function drawSnowflake(centre, radius) {
