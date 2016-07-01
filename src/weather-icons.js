@@ -11,18 +11,18 @@ import {drawSun}          from './sun/sun';
 import {drawCloud}        from './cloud/cloud';
 import {drawLightning}    from './lightning/lightning';
 
-export function draw(selector) {
-  drawOn(buildRootElement(selector));
+export function draw(weatherType, selector) {
+  drawOn(weatherType, buildRootElement(selector));
 }
 
-function drawOn(svg) {
+function drawOn(weatherType, svg) {
   [
     drawSun(suns.small),
     drawCloud(colours.darkGrey),
     drawRaindrop(precipitation.firstPoint),
     drawHail(precipitation.secondPoint),
     drawLightning()
-  ].forEach(drawComponent => drawComponent(svg));
+  ].forEach(drawComponent => drawComponent(svg, weatherType));
 }
 
 const rootElementAttributes = {
