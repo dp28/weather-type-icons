@@ -72,6 +72,8 @@ var WeatherIcon =
 
 	var _cloud = __webpack_require__(9);
 
+	var _lightning = __webpack_require__(10);
+
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function draw(selector) {
@@ -79,19 +81,9 @@ var WeatherIcon =
 
 	  (0, _sun.drawSun)(dimensions.sun.small)(svg);
 	  (0, _cloud.drawCloud)(_colours.colours.darkGrey)(svg);
-
 	  (0, _raindrop.drawRaindrop)(dimensions.raindrop.firstCentre)(svg);
 	  (0, _snowflake.drawSnowflake)(dimensions.raindrop.secondCentre)(svg);
-
-	  drawLightning();
-
-	  function drawLightning() {
-	    var left = dimensions.lightning.centreLeft;
-	    var width = dimensions.lightning.width;
-	    var height = width;
-	    var fifthWidth = width / 5;
-	    return svg.append('polyline').attr('points', [left.x + ' ' + left.y, left.x + fifthWidth + ' ' + (left.y - height), left.x + 3 * fifthWidth + ' ' + (left.y - height), left.x + width / 2 + ' ' + (left.y - height / 2), left.x + width + ' ' + (left.y - height / 2), left.x + fifthWidth + ' ' + (left.y + height), left.x + 2 * fifthWidth + ' ' + left.y]).attr('fill', _colours.colours.yellow);
-	  };
+	  (0, _lightning.drawLightning)()(svg);
 	}
 
 	draw('body');
@@ -9995,6 +9987,45 @@ var WeatherIcon =
 
 	  var rect = svg.append('rect').attr(_dimensions.cloud.rect).attr('fill', colour);
 	  return [rect].concat(_toConsumableArray(circles));
+	}
+
+/***/ },
+/* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.drawLightning = drawLightning;
+
+	var _colours = __webpack_require__(2);
+
+	var _dimensions = __webpack_require__(3);
+
+	var _svgUtils = __webpack_require__(5);
+
+	function drawLightning() {
+	  return function (svg) {
+	    return drawLightningOn(svg);
+	  };
+	}
+
+	var left = _dimensions.lightning.centreLeft;
+	var width = _dimensions.lightning.width;
+	var height = width;
+	var fifthWidth = width / 5;
+
+	var lightningPoints = [left.x + ' ' + left.y, left.x + fifthWidth + ' ' + (left.y - height), left.x + 3 * fifthWidth + ' ' + (left.y - height), left.x + width / 2 + ' ' + (left.y - height / 2), left.x + width + ' ' + (left.y - height / 2), left.x + fifthWidth + ' ' + (left.y + height), left.x + 2 * fifthWidth + ' ' + left.y];
+
+	var attributes = {
+	  points: lightningPoints,
+	  fill: _colours.colours.yellow
+	};
+
+	function drawLightningOn(svg) {
+	  return svg.append('polyline').attr(attributes);
 	}
 
 /***/ }

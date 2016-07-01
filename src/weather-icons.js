@@ -7,6 +7,7 @@ import {drawHail}      from './precipitation/hail';
 import {drawSnowflake} from './precipitation/snowflake';
 import {drawSun}       from './sun/sun';
 import {drawCloud}     from './cloud/cloud';
+import {drawLightning} from './lightning/lightning';
 
 export function draw(selector) {
   const svg = d3
@@ -19,30 +20,9 @@ export function draw(selector) {
 
   drawSun(dimensions.sun.small)(svg);
   drawCloud(colours.darkGrey)(svg);
-
   drawRaindrop(dimensions.raindrop.firstCentre)(svg);
   drawSnowflake(dimensions.raindrop.secondCentre)(svg);
-
-  drawLightning();
-
-  function drawLightning() {
-    const left   = dimensions.lightning.centreLeft;
-    const width  = dimensions.lightning.width;
-    const height = width;
-    const fifthWidth = width / 5;
-    return svg
-      .append('polyline')
-      .attr('points', [
-        `${left.x} ${left.y}`,
-        `${left.x + fifthWidth} ${left.y - height}`,
-        `${left.x + 3 * fifthWidth} ${left.y - height}`,
-        `${left.x + width / 2} ${left.y - height / 2}`,
-        `${left.x + width} ${left.y - height / 2}`,
-        `${left.x + fifthWidth} ${left.y + height}`,
-        `${left.x + 2 * fifthWidth} ${left.y}`
-      ])
-      .attr('fill', colours.yellow);
-  };
+  drawLightning()(svg);
 }
 
 draw('body');
