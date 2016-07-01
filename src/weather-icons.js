@@ -6,8 +6,7 @@ import {drawRaindrop}  from './precipitation/raindrop';
 import {drawHail}      from './precipitation/hail';
 import {drawSnowflake} from './precipitation/snowflake';
 import {drawSun}       from './sun/sun';
-
-import {drawCircle}    from './utils/svg-utils';
+import {drawCloud}     from './cloud/cloud';
 
 export function draw(selector) {
   const svg = d3
@@ -19,16 +18,7 @@ export function draw(selector) {
     .append('g');
 
   drawSun(dimensions.sun.small)(svg);
-
-  function drawCloudCircle({ centre, radius }) {
-    return drawCircle(centre, radius)(svg).attr('fill', colours.darkGrey);
-  }
-
-  dimensions.cloud.circles.forEach(drawCloudCircle)
-
-  svg.append('rect')
-    .attr(dimensions.cloud.rect)
-    .attr('fill', colours.darkGrey);
+  drawCloud(colours.darkGrey)(svg);
 
   drawRaindrop(dimensions.raindrop.firstCentre)(svg);
   drawSnowflake(dimensions.raindrop.secondCentre)(svg);

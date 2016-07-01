@@ -70,7 +70,7 @@ var WeatherIcon =
 
 	var _sun = __webpack_require__(8);
 
-	var _svgUtils = __webpack_require__(5);
+	var _cloud = __webpack_require__(9);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -78,17 +78,7 @@ var WeatherIcon =
 	  var svg = d3.select(selector).append('svg').attr('viewBox', dimensions.left + ' ' + dimensions.top + ' ' + dimensions.width + ' ' + dimensions.height).attr('preserveAspectRatio', 'xMidYMid meet').attr('width', 500).append('g');
 
 	  (0, _sun.drawSun)(dimensions.sun.small)(svg);
-
-	  function drawCloudCircle(_ref) {
-	    var centre = _ref.centre;
-	    var radius = _ref.radius;
-
-	    return (0, _svgUtils.drawCircle)(centre, radius)(svg).attr('fill', _colours.colours.darkGrey);
-	  }
-
-	  dimensions.cloud.circles.forEach(drawCloudCircle);
-
-	  svg.append('rect').attr(dimensions.cloud.rect).attr('fill', _colours.colours.darkGrey);
+	  (0, _cloud.drawCloud)(_colours.colours.darkGrey)(svg);
 
 	  (0, _raindrop.drawRaindrop)(dimensions.raindrop.firstCentre)(svg);
 	  (0, _snowflake.drawSnowflake)(dimensions.raindrop.secondCentre)(svg);
@@ -9974,6 +9964,38 @@ var WeatherIcon =
 	    fill: _colours.colours.yellow
 	  });
 	};
+
+/***/ },
+/* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.drawCloud = drawCloud;
+
+	var _dimensions = __webpack_require__(3);
+
+	var _svgUtils = __webpack_require__(5);
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+	function drawCloud(colour) {
+	  return function (svg) {
+	    return drawCloudUncurried(colour, svg);
+	  };
+	}
+
+	function drawCloudUncurried(colour, svg) {
+	  var circles = _dimensions.cloud.circles.map(function (circle) {
+	    return (0, _svgUtils.drawCircle)(circle.centre, circle.radius)(svg).attr('fill', colour);
+	  });
+
+	  var rect = svg.append('rect').attr(_dimensions.cloud.rect).attr('fill', colour);
+	  return [rect].concat(_toConsumableArray(circles));
+	}
 
 /***/ }
 /******/ ]);
