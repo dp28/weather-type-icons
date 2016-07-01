@@ -62,11 +62,19 @@ var WeatherIcon =
 
 	var dimensions = _interopRequireWildcard(_dimensions);
 
+	var _precipitationDimensions = __webpack_require__(12);
+
+	var precipitation = _interopRequireWildcard(_precipitationDimensions);
+
 	var _raindrop = __webpack_require__(4);
 
 	var _hail = __webpack_require__(6);
 
 	var _snowflake = __webpack_require__(7);
+
+	var _sunDimensions = __webpack_require__(13);
+
+	var suns = _interopRequireWildcard(_sunDimensions);
 
 	var _sun = __webpack_require__(8);
 
@@ -81,7 +89,7 @@ var WeatherIcon =
 	}
 
 	function drawOn(svg) {
-	  [(0, _sun.drawSun)(dimensions.sun.small), (0, _cloud.drawCloud)(_colours.colours.darkGrey), (0, _raindrop.drawRaindrop)(dimensions.raindrop.firstCentre), (0, _snowflake.drawSnowflake)(dimensions.raindrop.secondCentre), (0, _lightning.drawLightning)()].forEach(function (drawComponent) {
+	  [(0, _sun.drawSun)(suns.small), (0, _cloud.drawCloud)(_colours.colours.darkGrey), (0, _raindrop.drawRaindrop)(precipitation.firstPoint), (0, _hail.drawHail)(precipitation.secondPoint), (0, _lightning.drawLightning)()].forEach(function (drawComponent) {
 	    return drawComponent(svg);
 	  });
 	}
@@ -9685,81 +9693,6 @@ var WeatherIcon =
 	var width = exports.width = 100;
 	var height = exports.height = 100;
 
-	var centre = exports.centre = { x: width / 2, y: height / 2 };
-
-	var cloudConstants = {
-	  centreRect: {
-	    bottomLeft: { x: 20, y: 70 },
-	    width: 55
-	  },
-	  leftRadius: 18,
-	  rightRadius: 23
-	};
-
-	var cloud = exports.cloud = {
-	  circles: [{
-	    centre: {
-	      x: cloudConstants.centreRect.bottomLeft.x,
-	      y: cloudConstants.centreRect.bottomLeft.y - cloudConstants.leftRadius
-	    },
-	    radius: cloudConstants.leftRadius
-	  }, {
-	    centre: {
-	      x: cloudConstants.centreRect.bottomLeft.x + cloudConstants.centreRect.width,
-	      y: cloudConstants.centreRect.bottomLeft.y - cloudConstants.rightRadius
-	    },
-	    radius: cloudConstants.rightRadius
-	  }, {
-	    centre: {
-	      x: cloudConstants.centreRect.bottomLeft.x + cloudConstants.centreRect.width / 2,
-	      y: cloudConstants.centreRect.bottomLeft.y - 1.65 * cloudConstants.rightRadius
-	    },
-	    radius: 1.1 * cloudConstants.rightRadius
-	  }],
-	  rect: {
-	    x: cloudConstants.centreRect.bottomLeft.x,
-	    y: cloudConstants.centreRect.bottomLeft.y - cloudConstants.leftRadius * 2,
-	    width: cloudConstants.centreRect.width,
-	    height: cloudConstants.leftRadius * 2
-	  }
-	};
-
-	var sun = exports.sun = {
-	  small: {
-	    radius: 15,
-	    centre: { x: centre.x + 22, y: centre.y - 25 },
-	    sunburstRadius: 22
-	  }
-	};
-
-	var raindropRadius = 7;
-
-	var snowflake = exports.snowflake = {
-	  radius: raindropRadius * 1.2
-	};
-
-	var raindrop = exports.raindrop = {
-	  radius: raindropRadius,
-	  firstCentre: {
-	    x: cloudConstants.centreRect.bottomLeft.x + cloudConstants.centreRect.width * 0.75,
-	    y: cloudConstants.centreRect.bottomLeft.y
-	  },
-	  secondCentre: {
-	    x: cloudConstants.centreRect.bottomLeft.x + cloudConstants.centreRect.width * 0.25,
-	    y: cloudConstants.centreRect.bottomLeft.y + raindropRadius
-	  }
-	};
-
-	var lightningWidth = cloudConstants.centreRect.width / 2;
-
-	var lightning = exports.lightning = {
-	  width: lightningWidth,
-	  centreLeft: {
-	    x: cloudConstants.centreRect.bottomLeft.x + cloudConstants.centreRect.width / 4,
-	    y: cloudConstants.centreRect.bottomLeft.y + lightningWidth / 8
-	  }
-	};
-
 /***/ },
 /* 4 */
 /***/ function(module, exports, __webpack_require__) {
@@ -9773,13 +9706,9 @@ var WeatherIcon =
 
 	var _colours = __webpack_require__(2);
 
-	var _dimensions = __webpack_require__(3);
-
-	var dimensions = _interopRequireWildcard(_dimensions);
+	var _precipitationDimensions = __webpack_require__(12);
 
 	var _svgUtils = __webpack_require__(5);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function drawRaindrop(centre) {
 	  return function (svg) {
@@ -9788,7 +9717,7 @@ var WeatherIcon =
 	}
 
 	function drawRaindropUncurried(centre, svg) {
-	  var parts = [(0, _svgUtils.drawCircle)(centre, dimensions.raindrop.radius)(svg), drawTail(centre, svg)];
+	  var parts = [(0, _svgUtils.drawCircle)(centre, _precipitationDimensions.raindropRadius)(svg), drawTail(centre, svg)];
 	  return parts.map(function (part) {
 	    return part.attr('fill', _colours.colours.blue);
 	  });
@@ -9796,11 +9725,11 @@ var WeatherIcon =
 
 	function drawTail(raindropCentre, svg) {
 	  var params = {
-	    width: dimensions.raindrop.radius * 1.9,
-	    height: -dimensions.raindrop.radius * 2,
+	    width: _precipitationDimensions.raindropRadius * 1.9,
+	    height: -_precipitationDimensions.raindropRadius * 2,
 	    bottomLeft: {
-	      x: raindropCentre.x - dimensions.raindrop.radius * 0.95,
-	      y: raindropCentre.y - dimensions.raindrop.radius * 0.325
+	      x: raindropCentre.x - _precipitationDimensions.raindropRadius * 0.95,
+	      y: raindropCentre.y - _precipitationDimensions.raindropRadius * 0.325
 	    }
 	  };
 	  return drawIsoscelesTriangle(params, svg).attr('transform', 'rotate(15, ' + raindropCentre.x + ', ' + raindropCentre.y + ')');
@@ -9846,13 +9775,13 @@ var WeatherIcon =
 
 	var _colours = __webpack_require__(2);
 
-	var _dimensions = __webpack_require__(3);
+	var _precipitationDimensions = __webpack_require__(12);
 
 	var _svgUtils = __webpack_require__(5);
 
 	function drawHail(centre) {
 	  return function (svg) {
-	    return (0, _svgUtils.drawCircle)(centre, _dimensions.raindrop.radius)(svg).attr('fill', _colours.colours.white);
+	    return (0, _svgUtils.drawCircle)(centre, _precipitationDimensions.raindropRadius)(svg).attr('fill', _colours.colours.white);
 	  };
 	}
 
@@ -9869,7 +9798,7 @@ var WeatherIcon =
 
 	var _colours = __webpack_require__(2);
 
-	var _dimensions = __webpack_require__(3);
+	var _precipitationDimensions = __webpack_require__(12);
 
 	var _svgUtils = __webpack_require__(5);
 
@@ -9879,7 +9808,7 @@ var WeatherIcon =
 	  };
 	}
 
-	var radius = _dimensions.raindrop.radius * 1.2;
+	var radius = _precipitationDimensions.raindropRadius * 1.2;
 	var innerRadius = radius / 2;
 	var numSnowflakeParts = 6;
 
@@ -9911,15 +9840,9 @@ var WeatherIcon =
 	});
 	exports.drawSun = drawSun;
 
-	var _colours = __webpack_require__(2);
-
-	var _dimensions = __webpack_require__(3);
-
-	var dimensions = _interopRequireWildcard(_dimensions);
-
 	var _svgUtils = __webpack_require__(5);
 
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	var _colours = __webpack_require__(2);
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
@@ -9975,7 +9898,7 @@ var WeatherIcon =
 	});
 	exports.drawCloud = drawCloud;
 
-	var _dimensions = __webpack_require__(3);
+	var _cloudDimensions = __webpack_require__(11);
 
 	var _svgUtils = __webpack_require__(5);
 
@@ -9988,12 +9911,12 @@ var WeatherIcon =
 	}
 
 	function drawCloudUncurried(colour, svg) {
-	  var circles = _dimensions.cloud.circles.map(function (circle) {
+	  var cloudCircles = _cloudDimensions.circles.map(function (circle) {
 	    return (0, _svgUtils.drawCircle)(circle.centre, circle.radius)(svg).attr('fill', colour);
 	  });
 
-	  var rect = svg.append('rect').attr(_dimensions.cloud.rect).attr('fill', colour);
-	  return [rect].concat(_toConsumableArray(circles));
+	  var cloudRect = svg.append('rect').attr(_cloudDimensions.rect).attr('fill', colour);
+	  return [cloudRect].concat(_toConsumableArray(cloudCircles));
 	}
 
 /***/ },
@@ -10009,9 +9932,7 @@ var WeatherIcon =
 
 	var _colours = __webpack_require__(2);
 
-	var _dimensions = __webpack_require__(3);
-
-	var _svgUtils = __webpack_require__(5);
+	var _cloudDimensions = __webpack_require__(11);
 
 	function drawLightning() {
 	  return function (svg) {
@@ -10019,21 +9940,115 @@ var WeatherIcon =
 	  };
 	}
 
-	var left = _dimensions.lightning.centreLeft;
-	var width = _dimensions.lightning.width;
+	var width = _cloudDimensions.centre.width / 2;
 	var height = width;
 	var fifthWidth = width / 5;
 
-	var lightningPoints = [left.x + ' ' + left.y, left.x + fifthWidth + ' ' + (left.y - height), left.x + 3 * fifthWidth + ' ' + (left.y - height), left.x + width / 2 + ' ' + (left.y - height / 2), left.x + width + ' ' + (left.y - height / 2), left.x + fifthWidth + ' ' + (left.y + height), left.x + 2 * fifthWidth + ' ' + left.y];
+	var left = {
+	  x: _cloudDimensions.centre.bottomLeft.x + width / 2,
+	  y: _cloudDimensions.centre.bottomLeft.y + width / 8
+	};
+
+	var points = [left.x + ' ' + left.y, left.x + fifthWidth + ' ' + (left.y - height), left.x + 3 * fifthWidth + ' ' + (left.y - height), left.x + width / 2 + ' ' + (left.y - height / 2), left.x + width + ' ' + (left.y - height / 2), left.x + fifthWidth + ' ' + (left.y + height), left.x + 2 * fifthWidth + ' ' + left.y];
 
 	var attributes = {
-	  points: lightningPoints,
+	  points: points,
 	  fill: _colours.colours.yellow
 	};
 
 	function drawLightningOn(svg) {
 	  return svg.append('polyline').attr(attributes);
 	}
+
+/***/ },
+/* 11 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var centre = exports.centre = {
+	  bottomLeft: { x: 20, y: 70 },
+	  width: 55
+	};
+
+	var leftRadius = 18;
+	var rightRadius = 23;
+
+	var rect = exports.rect = {
+	  x: centre.bottomLeft.x,
+	  y: centre.bottomLeft.y - leftRadius * 2,
+	  width: centre.width,
+	  height: leftRadius * 2
+	};
+
+	var circles = exports.circles = [{
+	  centre: {
+	    x: centre.bottomLeft.x,
+	    y: centre.bottomLeft.y - leftRadius
+	  },
+	  radius: leftRadius
+	}, {
+	  centre: {
+	    x: centre.bottomLeft.x + centre.width,
+	    y: centre.bottomLeft.y - rightRadius
+	  },
+	  radius: rightRadius
+	}, {
+	  centre: {
+	    x: centre.bottomLeft.x + centre.width / 2,
+	    y: centre.bottomLeft.y - 1.65 * rightRadius
+	  },
+	  radius: 1.1 * rightRadius
+	}];
+
+/***/ },
+/* 12 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.secondPoint = exports.firstPoint = exports.raindropRadius = undefined;
+
+	var _cloudDimensions = __webpack_require__(11);
+
+	var raindropRadius = exports.raindropRadius = 7;
+
+	var firstPoint = exports.firstPoint = {
+	  x: _cloudDimensions.centre.bottomLeft.x + _cloudDimensions.centre.width * 0.75,
+	  y: _cloudDimensions.centre.bottomLeft.y
+	};
+
+	var secondPoint = exports.secondPoint = {
+	  x: _cloudDimensions.centre.bottomLeft.x + _cloudDimensions.centre.width * 0.25,
+	  y: _cloudDimensions.centre.bottomLeft.y + raindropRadius
+	};
+
+/***/ },
+/* 13 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.small = undefined;
+
+	var _dimensions = __webpack_require__(3);
+
+	var centre = { x: _dimensions.width / 2, y: _dimensions.height / 2 };
+
+	var small = exports.small = {
+	  radius: 15,
+	  centre: { x: centre.x + 22, y: centre.y - 25 },
+	  sunburstRadius: 22
+	};
 
 /***/ }
 /******/ ]);

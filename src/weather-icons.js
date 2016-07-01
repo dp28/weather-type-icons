@@ -1,13 +1,15 @@
 import * as d3 from 'd3';
 
-import {colours}       from './colours';
-import * as dimensions from './dimensions';
-import {drawRaindrop}  from './precipitation/raindrop';
-import {drawHail}      from './precipitation/hail';
-import {drawSnowflake} from './precipitation/snowflake';
-import {drawSun}       from './sun/sun';
-import {drawCloud}     from './cloud/cloud';
-import {drawLightning} from './lightning/lightning';
+import {colours}          from './colours';
+import * as dimensions    from './dimensions';
+import * as precipitation from './precipitation/precipitation-dimensions';
+import {drawRaindrop}     from './precipitation/raindrop';
+import {drawHail}         from './precipitation/hail';
+import {drawSnowflake}    from './precipitation/snowflake';
+import * as suns          from './sun/sun-dimensions';
+import {drawSun}          from './sun/sun';
+import {drawCloud}        from './cloud/cloud';
+import {drawLightning}    from './lightning/lightning';
 
 export function draw(selector) {
   drawOn(buildRootElement(selector));
@@ -15,10 +17,10 @@ export function draw(selector) {
 
 function drawOn(svg) {
   [
-    drawSun(dimensions.sun.small),
+    drawSun(suns.small),
     drawCloud(colours.darkGrey),
-    drawRaindrop(dimensions.raindrop.firstCentre),
-    drawSnowflake(dimensions.raindrop.secondCentre),
+    drawRaindrop(precipitation.firstPoint),
+    drawHail(precipitation.secondPoint),
     drawLightning()
   ].forEach(drawComponent => drawComponent(svg));
 }

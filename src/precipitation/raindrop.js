@@ -1,6 +1,6 @@
-import {colours}       from '../colours';
-import * as dimensions from '../dimensions';
-import {drawCircle}    from '../utils/svg-utils';
+import {colours}                  from '../colours';
+import {raindropRadius as radius} from './precipitation-dimensions';
+import {drawCircle}               from '../utils/svg-utils';
 
 export function drawRaindrop(centre) {
   return svg => drawRaindropUncurried(centre, svg);
@@ -8,7 +8,7 @@ export function drawRaindrop(centre) {
 
 function drawRaindropUncurried(centre, svg) {
   const parts = [
-    drawCircle(centre, dimensions.raindrop.radius)(svg),
+    drawCircle(centre, radius)(svg),
     drawTail(centre, svg)
   ];
   return parts.map(part => part.attr('fill', colours.blue));
@@ -16,11 +16,11 @@ function drawRaindropUncurried(centre, svg) {
 
 function drawTail(raindropCentre, svg) {
   const params = {
-    width:      dimensions.raindrop.radius * 1.9,
-    height:     -dimensions.raindrop.radius * 2,
+    width:      radius * 1.9,
+    height:     -radius * 2,
     bottomLeft: {
-      x: raindropCentre.x - dimensions.raindrop.radius * 0.95,
-      y: raindropCentre.y  - dimensions.raindrop.radius * 0.325
+      x: raindropCentre.x - radius * 0.95,
+      y: raindropCentre.y  - radius * 0.325
     }
   };
   return drawIsoscelesTriangle(params, svg)

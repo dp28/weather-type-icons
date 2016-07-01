@@ -1,6 +1,5 @@
-import {colours}       from '../colours';
-import * as dimensions from '../dimensions';
-import {drawCircle}    from '../utils/svg-utils';
+import {drawCircle} from '../utils/svg-utils';
+import {colours}    from '../colours';
 
 export function drawSun(sun) {
   return svg => drawSunUncurried(sun, svg);

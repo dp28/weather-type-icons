@@ -1,12 +1,12 @@
-import {colours}    from '../colours';
-import {raindrop}   from '../dimensions';
-import {drawCircle} from '../utils/svg-utils';
+import {colours}        from '../colours';
+import {raindropRadius} from './precipitation-dimensions';
+import {drawCircle}     from '../utils/svg-utils';
 
 export function drawSnowflake(centre) {
   return svg => drawSnowflakeUncurried(centre, svg);
 }
 
-const radius            = raindrop.radius * 1.2;
+const radius            = raindropRadius * 1.2;
 const innerRadius       = radius / 2;
 const numSnowflakeParts = 6;
 
