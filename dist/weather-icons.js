@@ -62,24 +62,21 @@ var WeatherIcon =
 
 	var dimensions = _interopRequireWildcard(_dimensions);
 
+	var _raindrop = __webpack_require__(4);
+
+	var _svgUtils = __webpack_require__(5);
+
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function draw(selector) {
 	  var svg = d3.select(selector).append('svg').attr('viewBox', dimensions.left + ' ' + dimensions.top + ' ' + dimensions.width + ' ' + dimensions.height).attr('preserveAspectRatio', 'xMidYMid meet').attr('width', 500).append('g');
-
-	  function drawCircle(_ref, radius) {
-	    var x = _ref.x;
-	    var y = _ref.y;
-
-	    return svg.append('circle').attr('cx', x).attr('cy', y).attr('r', radius);
-	  };
 
 	  drawSun();
 
 	  function drawSun() {
 	    var sun = dimensions.sun.small;
 
-	    drawCircle(sun.centre, sun.radius).attr('fill', _colours.colours.yellow);
+	    (0, _svgUtils.drawCircle)(sun.centre, sun.radius)(svg).attr('fill', _colours.colours.yellow);
 
 	    function buildSunburst() {
 	      var sunburstPoint = {
@@ -102,31 +99,21 @@ var WeatherIcon =
 	    });
 	  }
 
-	  function drawCloudCircle(_ref2) {
-	    var centre = _ref2.centre;
-	    var radius = _ref2.radius;
+	  function drawCloudCircle(_ref) {
+	    var centre = _ref.centre;
+	    var radius = _ref.radius;
 
-	    return drawCircle(centre, radius).attr('fill', _colours.colours.darkGrey);
+	    return (0, _svgUtils.drawCircle)(centre, radius)(svg).attr('fill', _colours.colours.darkGrey);
 	  }
 
 	  dimensions.cloud.circles.forEach(drawCloudCircle);
 
 	  svg.append('rect').attr(dimensions.cloud.rect).attr('fill', _colours.colours.darkGrey);
 
-	  drawRaindrop(dimensions.raindrop.firstCentre);
-	  drawRaindrop(dimensions.raindrop.secondCentre);
+	  (0, _raindrop.drawRaindrop)(dimensions.raindrop.firstCentre)(svg);
+	  (0, _raindrop.drawRaindrop)(dimensions.raindrop.secondCentre)(svg);
 
 	  drawLightning();
-
-	  function drawRaindrop(raindropCentre) {
-	    drawCircle(raindropCentre, dimensions.raindrop.radius).attr('fill', _colours.colours.blue);
-
-	    drawIsoscelesTriangle(dimensions.raindrop.radius * 1.9, -dimensions.raindrop.radius * 2, { x: raindropCentre.x - dimensions.raindrop.radius * 0.95, y: raindropCentre.y - dimensions.raindrop.radius * 0.325 }).attr('fill', _colours.colours.blue).attr('transform', 'rotate(15, ' + raindropCentre.x + ', ' + raindropCentre.y + ')');
-	  };
-
-	  function drawIsoscelesTriangle(width, height, bottomLeft) {
-	    return svg.append('polyline').attr('points', [bottomLeft.x + ' ' + bottomLeft.y, bottomLeft.x + width / 2 + ' ' + (bottomLeft.y + height), bottomLeft.x + width + ' ' + bottomLeft.y]);
-	  };
 
 	  function drawLightning() {
 	    var left = dimensions.lightning.centreLeft;
@@ -137,7 +124,7 @@ var WeatherIcon =
 	  }
 
 	  function drawHail(centre) {
-	    drawCircle(centre, dimensions.raindrop.radius).attr('fill', _colours.colours.white);
+	    (0, _svgUtils.drawCircle)(centre, dimensions.raindrop.radius)(svg).attr('fill', _colours.colours.white);
 	  }
 
 	  function drawSnowflake(centre, radius) {
@@ -9831,6 +9818,79 @@ var WeatherIcon =
 	    x: cloudConstants.centreRect.bottomLeft.x + cloudConstants.centreRect.width / 4,
 	    y: cloudConstants.centreRect.bottomLeft.y + lightningWidth / 8
 	  }
+	};
+
+/***/ },
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.drawRaindrop = drawRaindrop;
+
+	var _colours = __webpack_require__(2);
+
+	var _dimensions = __webpack_require__(3);
+
+	var dimensions = _interopRequireWildcard(_dimensions);
+
+	var _svgUtils = __webpack_require__(5);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function drawRaindrop(centre) {
+	  return function (svg) {
+	    return drawRaindropUncurried(centre, svg);
+	  };
+	}
+
+	function drawRaindropUncurried(centre, svg) {
+	  var parts = [(0, _svgUtils.drawCircle)(centre, dimensions.raindrop.radius)(svg), drawTail(centre, svg)];
+	  return parts.map(function (part) {
+	    return part.attr('fill', _colours.colours.blue);
+	  });
+	}
+
+	function drawTail(raindropCentre, svg) {
+	  var params = {
+	    width: dimensions.raindrop.radius * 1.9,
+	    height: -dimensions.raindrop.radius * 2,
+	    bottomLeft: {
+	      x: raindropCentre.x - dimensions.raindrop.radius * 0.95,
+	      y: raindropCentre.y - dimensions.raindrop.radius * 0.325
+	    }
+	  };
+	  return drawIsoscelesTriangle(params, svg).attr('transform', 'rotate(15, ' + raindropCentre.x + ', ' + raindropCentre.y + ')');
+	}
+
+	function drawIsoscelesTriangle(_ref, svg) {
+	  var width = _ref.width;
+	  var height = _ref.height;
+	  var bottomLeft = _ref.bottomLeft;
+
+	  return svg.append('polyline').attr('points', [bottomLeft.x + ' ' + bottomLeft.y, bottomLeft.x + width / 2 + ' ' + (bottomLeft.y + height), bottomLeft.x + width + ' ' + bottomLeft.y]);
+	};
+
+/***/ },
+/* 5 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.drawCircle = drawCircle;
+	function drawCircle(_ref, radius) {
+	  var x = _ref.x;
+	  var y = _ref.y;
+
+	  return function (svg) {
+	    return svg.append('circle').attr('cx', x).attr('cy', y).attr('r', radius);
+	  };
 	};
 
 /***/ }

@@ -1,7 +1,9 @@
 import * as d3 from 'd3';
 
-import {colours} from './colours';
+import {colours}       from './colours';
 import * as dimensions from './dimensions';
+import {drawRaindrop}  from './precipitation/raindrop';
+import {drawCircle}    from './utils/svg-utils';
 
 export function draw(selector) {
   const svg = d3
@@ -12,20 +14,12 @@ export function draw(selector) {
     .attr('width', 500)
     .append('g');
 
-  function drawCircle({ x, y }, radius) {
-    return svg
-      .append('circle')
-      .attr('cx', x)
-      .attr('cy', y)
-      .attr('r', radius)
-  };
-
   drawSun();
 
   function drawSun() {
     const sun = dimensions.sun.small;
 
-    drawCircle(sun.centre, sun.radius)
+    drawCircle(sun.centre, sun.radius)(svg)
       .attr('fill', colours.yellow);
 
     function buildSunburst() {
@@ -51,7 +45,7 @@ export function draw(selector) {
   }
 
   function drawCloudCircle({ centre, radius }) {
-    return drawCircle(centre, radius).attr('fill', colours.darkGrey);
+    return drawCircle(centre, radius)(svg).attr('fill', colours.darkGrey);
   }
 
   dimensions.cloud.circles.forEach(drawCloudCircle)
@@ -60,28 +54,10 @@ export function draw(selector) {
     .attr(dimensions.cloud.rect)
     .attr('fill', colours.darkGrey);
 
-  drawRaindrop(dimensions.raindrop.firstCentre);
-  drawRaindrop(dimensions.raindrop.secondCentre);
+  drawRaindrop(dimensions.raindrop.firstCentre)(svg);
+  drawRaindrop(dimensions.raindrop.secondCentre)(svg);
 
   drawLightning();
-
-  function drawRaindrop(raindropCentre) {
-    drawCircle(raindropCentre, dimensions.raindrop.radius).attr('fill', colours.blue);
-
-    drawIsoscelesTriangle(dimensions.raindrop.radius * 1.9, - dimensions.raindrop.radius * 2, { x: raindropCentre.x - dimensions.raindrop.radius * 0.95, y: raindropCentre.y  - dimensions.raindrop.radius * 0.325 })
-      .attr('fill', colours.blue)
-      .attr('transform', `rotate(15, ${raindropCentre.x}, ${raindropCentre.y})`);
-  };
-
-  function drawIsoscelesTriangle(width, height, bottomLeft) {
-    return svg
-      .append('polyline')
-      .attr('points', [
-        `${bottomLeft.x} ${bottomLeft.y}`,
-        `${bottomLeft.x + width / 2} ${bottomLeft.y + height}`,
-        `${bottomLeft.x + width} ${bottomLeft.y}`
-      ]);
-  };
 
   function drawLightning() {
     const left   = dimensions.lightning.centreLeft;
@@ -103,7 +79,7 @@ export function draw(selector) {
   }
 
   function drawHail(centre) {
-    drawCircle(centre, dimensions.raindrop.radius).attr('fill', colours.white);
+    drawCircle(centre, dimensions.raindrop.radius)(svg).attr('fill', colours.white);
   }
 
   function drawSnowflake(centre, radius) {
