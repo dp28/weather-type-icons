@@ -1,0 +1,7 @@
+node_modules/
+graphical-test/
+src/
+.DS_Store
+.gitattributes
+npm-debug.log
+webpack.config.js

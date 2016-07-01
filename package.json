@@ -4,6 +4,7 @@
   "description": "Generate weather icon SVGs from WeatherTypes",
   "main": "dist/weather-icons.js",
   "scripts": {
+    "prepublish": "webpack",
     "watch:compile": "webpack --watch",
     "watch:test": "cd graphical-test && webpack --watch"
   },
