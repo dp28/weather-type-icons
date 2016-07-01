@@ -33,8 +33,5 @@ function buildRootElement(selector) {
     .select(selector)
     .append('svg')
     .attr(rootElementAttributes)
-    .attr('width', 500)
     .append('g');
 }
-
-draw('body');

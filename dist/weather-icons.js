@@ -92,10 +92,8 @@ var WeatherIcon =
 	};
 
 	function buildRootElement(selector) {
-	  return d3.select(selector).append('svg').attr(rootElementAttributes).attr('width', 500).append('g');
+	  return d3.select(selector).append('svg').attr(rootElementAttributes).append('g');
 	}
-
-	draw('body');
 
 /***/ },
 /* 1 */
