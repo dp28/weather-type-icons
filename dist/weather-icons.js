@@ -77,13 +77,22 @@ var WeatherIcon =
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function draw(selector) {
-	  var svg = d3.select(selector).append('svg').attr('viewBox', dimensions.left + ' ' + dimensions.top + ' ' + dimensions.width + ' ' + dimensions.height).attr('preserveAspectRatio', 'xMidYMid meet').attr('width', 500).append('g');
+	  drawOn(buildRootElement(selector));
+	}
 
-	  (0, _sun.drawSun)(dimensions.sun.small)(svg);
-	  (0, _cloud.drawCloud)(_colours.colours.darkGrey)(svg);
-	  (0, _raindrop.drawRaindrop)(dimensions.raindrop.firstCentre)(svg);
-	  (0, _snowflake.drawSnowflake)(dimensions.raindrop.secondCentre)(svg);
-	  (0, _lightning.drawLightning)()(svg);
+	function drawOn(svg) {
+	  [(0, _sun.drawSun)(dimensions.sun.small), (0, _cloud.drawCloud)(_colours.colours.darkGrey), (0, _raindrop.drawRaindrop)(dimensions.raindrop.firstCentre), (0, _snowflake.drawSnowflake)(dimensions.raindrop.secondCentre), (0, _lightning.drawLightning)()].forEach(function (drawComponent) {
+	    return drawComponent(svg);
+	  });
+	}
+
+	var rootElementAttributes = {
+	  viewBox: dimensions.left + ' ' + dimensions.top + ' ' + dimensions.width + ' ' + dimensions.height,
+	  preserveAspectRatio: 'xMidYMid meet'
+	};
+
+	function buildRootElement(selector) {
+	  return d3.select(selector).append('svg').attr(rootElementAttributes).attr('width', 500).append('g');
 	}
 
 	draw('body');

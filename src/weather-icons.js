@@ -10,19 +10,31 @@ import {drawCloud}     from './cloud/cloud';
 import {drawLightning} from './lightning/lightning';
 
 export function draw(selector) {
-  const svg = d3
+  drawOn(buildRootElement(selector));
+}
+
+function drawOn(svg) {
+  [
+    drawSun(dimensions.sun.small),
+    drawCloud(colours.darkGrey),
+    drawRaindrop(dimensions.raindrop.firstCentre),
+    drawSnowflake(dimensions.raindrop.secondCentre),
+    drawLightning()
+  ].forEach(drawComponent => drawComponent(svg));
+}
+
+const rootElementAttributes = {
+  viewBox: `${dimensions.left} ${dimensions.top} ${dimensions.width} ${dimensions.height}`,
+  preserveAspectRatio: 'xMidYMid meet'
+}
+
+function buildRootElement(selector) {
+  return d3
     .select(selector)
     .append('svg')
-    .attr('viewBox', `${dimensions.left} ${dimensions.top} ${dimensions.width} ${dimensions.height}`)
-    .attr('preserveAspectRatio', 'xMidYMid meet')
+    .attr(rootElementAttributes)
     .attr('width', 500)
     .append('g');
-
-  drawSun(dimensions.sun.small)(svg);
-  drawCloud(colours.darkGrey)(svg);
-  drawRaindrop(dimensions.raindrop.firstCentre)(svg);
-  drawSnowflake(dimensions.raindrop.secondCentre)(svg);
-  drawLightning()(svg);
 }
 
 draw('body');
