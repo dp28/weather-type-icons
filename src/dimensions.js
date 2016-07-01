@@ -48,9 +48,9 @@ export const cloud = {
 
 export const sun = {
   small: {
-    radius:   15,
-    centre:   { x: centre.x + 22, y: centre.y - 25 },
-    sunburst: { width: 2, number: 12, radius: 22 }
+    radius:         15,
+    centre:         { x: centre.x + 22, y: centre.y - 25 },
+    sunburstRadius: 22
   }
 };
 

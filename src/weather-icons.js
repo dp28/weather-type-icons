@@ -5,6 +5,7 @@ import * as dimensions from './dimensions';
 import {drawRaindrop}  from './precipitation/raindrop';
 import {drawHail}      from './precipitation/hail';
 import {drawSnowflake} from './precipitation/snowflake';
+import {drawSun}       from './sun/sun';
 
 import {drawCircle}    from './utils/svg-utils';
 
@@ -17,35 +18,7 @@ export function draw(selector) {
     .attr('width', 500)
     .append('g');
 
-  drawSun();
-
-  function drawSun() {
-    const sun = dimensions.sun.small;
-
-    drawCircle(sun.centre, sun.radius)(svg)
-      .attr('fill', colours.yellow);
-
-    function buildSunburst() {
-       const sunburstPoint = {
-        x: sun.centre.x + (sun.sunburst.radius * Math.sin(0)),
-        y: sun.centre.y - (sun.sunburst.radius * Math.cos(0)),
-      }
-
-      const halfSunburstWidth = sun.sunburst.width / 2;
-
-      return svg.append('rect').attr({
-        x: sunburstPoint.x - halfSunburstWidth,
-        y: sunburstPoint.y - halfSunburstWidth,
-        width: sun.sunburst.width,
-        height: sun.sunburst.radius - sun.radius,
-        fill: colours.yellow
-      });
-    };
-    Array(sun.sunburst.number).fill().forEach((_, i) => (
-      buildSunburst()
-        .attr('transform', `rotate(${i * 360 / sun.sunburst.number}, ${sun.centre.x}, ${sun.centre.y})`)
-    ));
-  }
+  drawSun(dimensions.sun.small)(svg);
 
   function drawCloudCircle({ centre, radius }) {
     return drawCircle(centre, radius)(svg).attr('fill', colours.darkGrey);

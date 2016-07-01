@@ -68,6 +68,8 @@ var WeatherIcon =
 
 	var _snowflake = __webpack_require__(7);
 
+	var _sun = __webpack_require__(8);
+
 	var _svgUtils = __webpack_require__(5);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
@@ -75,33 +77,7 @@ var WeatherIcon =
 	function draw(selector) {
 	  var svg = d3.select(selector).append('svg').attr('viewBox', dimensions.left + ' ' + dimensions.top + ' ' + dimensions.width + ' ' + dimensions.height).attr('preserveAspectRatio', 'xMidYMid meet').attr('width', 500).append('g');
 
-	  drawSun();
-
-	  function drawSun() {
-	    var sun = dimensions.sun.small;
-
-	    (0, _svgUtils.drawCircle)(sun.centre, sun.radius)(svg).attr('fill', _colours.colours.yellow);
-
-	    function buildSunburst() {
-	      var sunburstPoint = {
-	        x: sun.centre.x + sun.sunburst.radius * Math.sin(0),
-	        y: sun.centre.y - sun.sunburst.radius * Math.cos(0)
-	      };
-
-	      var halfSunburstWidth = sun.sunburst.width / 2;
-
-	      return svg.append('rect').attr({
-	        x: sunburstPoint.x - halfSunburstWidth,
-	        y: sunburstPoint.y - halfSunburstWidth,
-	        width: sun.sunburst.width,
-	        height: sun.sunburst.radius - sun.radius,
-	        fill: _colours.colours.yellow
-	      });
-	    };
-	    Array(sun.sunburst.number).fill().forEach(function (_, i) {
-	      return buildSunburst().attr('transform', 'rotate(' + i * 360 / sun.sunburst.number + ', ' + sun.centre.x + ', ' + sun.centre.y + ')');
-	    });
-	  }
+	  (0, _sun.drawSun)(dimensions.sun.small)(svg);
 
 	  function drawCloudCircle(_ref) {
 	    var centre = _ref.centre;
@@ -9763,7 +9739,7 @@ var WeatherIcon =
 	  small: {
 	    radius: 15,
 	    centre: { x: centre.x + 22, y: centre.y - 25 },
-	    sunburst: { width: 2, number: 12, radius: 22 }
+	    sunburstRadius: 22
 	  }
 	};
 
@@ -9932,6 +9908,70 @@ var WeatherIcon =
 	    y: centre.y,
 	    width: halfWidth * 2,
 	    height: height * 2
+	  });
+	};
+
+/***/ },
+/* 8 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.drawSun = drawSun;
+
+	var _colours = __webpack_require__(2);
+
+	var _dimensions = __webpack_require__(3);
+
+	var dimensions = _interopRequireWildcard(_dimensions);
+
+	var _svgUtils = __webpack_require__(5);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+	function drawSun(sun) {
+	  return function (svg) {
+	    return drawSunUncurried(sun, svg);
+	  };
+	}
+
+	var sunburstNumber = 12;
+
+	function drawSunUncurried(sun, svg) {
+	  var circle = (0, _svgUtils.drawCircle)(sun.centre, sun.radius)(svg).attr('fill', _colours.colours.yellow);
+	  var bursts = buildSunbursts(sun, svg);
+	  return [circle].concat(_toConsumableArray(bursts));
+	}
+
+	function buildSunbursts(sun, svg) {
+	  return Array(sunburstNumber).fill().map(function (_, i) {
+	    return buildSunburst(sun, svg).attr('transform', 'rotate(' + i * 360 / sunburstNumber + ', ' + sun.centre.x + ', ' + sun.centre.y + ')');
+	  });
+	}
+
+	function buildSunburst(_ref, svg) {
+	  var centre = _ref.centre;
+	  var radius = _ref.radius;
+	  var sunburstRadius = _ref.sunburstRadius;
+
+	  var sunburstPoint = {
+	    x: centre.x + sunburstRadius * Math.sin(0),
+	    y: centre.y - sunburstRadius * Math.cos(0)
+	  };
+
+	  var halfSunburstWidth = sunburstRadius / 22;
+
+	  return svg.append('rect').attr({
+	    x: sunburstPoint.x - halfSunburstWidth,
+	    y: sunburstPoint.y - halfSunburstWidth,
+	    width: halfSunburstWidth * 2,
+	    height: sunburstRadius - radius,
+	    fill: _colours.colours.yellow
 	  });
 	};
 
