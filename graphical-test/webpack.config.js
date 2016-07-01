@@ -1,8 +1,7 @@
 module.exports = {
-  entry: './src/weather-icons.js',
+  entry: './graphical-test/graphical-test.js',
   output: {
-    filename: './dist/weather-icons.js',
-    libraryTarget: 'umd'
+    filename: './graphical-test/graphical-test-compiled.js'
   },
   module: {
     loaders: [
@@ -15,8 +14,5 @@ module.exports = {
         }
       }
     ]
-  },
-  "externals": {
-    "d3": "d3"
   }
 }
