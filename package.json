@@ -8,9 +8,9 @@
     "watch:compile": "webpack --watch",
     "watch:test": "cd graphical-test && webpack --watch"
   },
-  "repository" :  {
-    "type" : "git",
-    "url" : "https://github.com/dp28/weather-icons.git"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dp28/weather-icons.git"
   },
   "keywords": [
     "weather",
@@ -20,7 +20,8 @@
   "author": "Daniel Patterson <dan24patt@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "d3": "^3.5.17"
+    "d3": "^3.5.17",
+    "weather-type": "^0.1.1"
   },
   "devDependencies": {
     "babel-core": "^6.9.1",
