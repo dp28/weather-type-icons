@@ -4,6 +4,7 @@ import {colours}       from './colours';
 import * as dimensions from './dimensions';
 import {drawRaindrop}  from './precipitation/raindrop';
 import {drawHail}      from './precipitation/hail';
+import {drawSnowflake} from './precipitation/snowflake';
 
 import {drawCircle}    from './utils/svg-utils';
 
@@ -57,7 +58,7 @@ export function draw(selector) {
     .attr('fill', colours.darkGrey);
 
   drawRaindrop(dimensions.raindrop.firstCentre)(svg);
-  drawHail(dimensions.raindrop.secondCentre)(svg);
+  drawSnowflake(dimensions.raindrop.secondCentre)(svg);
 
   drawLightning();
 
@@ -78,33 +79,6 @@ export function draw(selector) {
         `${left.x + 2 * fifthWidth} ${left.y}`
       ])
       .attr('fill', colours.yellow);
-  }
-
-  function drawSnowflake(centre, radius) {
-    const innerRadius = radius / 2;
-
-    const numSnowflakeParts = 6;
-    Array(numSnowflakeParts).fill().forEach((_, i) => (
-      buildSnowflakePart(centre, innerRadius, innerRadius)
-        .attr('transform', `rotate(${i * 360 / numSnowflakeParts}, ${centre.x}, ${centre.y})`)
-        .attr('fill', colours.white)
-    ));
-  };
-
-  function buildSnowflakePart(centre, radius, height) {
-    const point = {
-      x: centre.x,
-      y: centre.y,
-    }
-
-    const halfWidth = height / 3;
-
-    return svg.append('rect').attr({
-      x: point.x - halfWidth,
-      y: point.y,
-      width: halfWidth * 2,
-      height: height * 2
-    });
   };
 }
 

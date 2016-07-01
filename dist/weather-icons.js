@@ -66,6 +66,8 @@ var WeatherIcon =
 
 	var _hail = __webpack_require__(6);
 
+	var _snowflake = __webpack_require__(7);
+
 	var _svgUtils = __webpack_require__(5);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
@@ -113,7 +115,7 @@ var WeatherIcon =
 	  svg.append('rect').attr(dimensions.cloud.rect).attr('fill', _colours.colours.darkGrey);
 
 	  (0, _raindrop.drawRaindrop)(dimensions.raindrop.firstCentre)(svg);
-	  (0, _hail.drawHail)(dimensions.raindrop.secondCentre)(svg);
+	  (0, _snowflake.drawSnowflake)(dimensions.raindrop.secondCentre)(svg);
 
 	  drawLightning();
 
@@ -123,31 +125,6 @@ var WeatherIcon =
 	    var height = width;
 	    var fifthWidth = width / 5;
 	    return svg.append('polyline').attr('points', [left.x + ' ' + left.y, left.x + fifthWidth + ' ' + (left.y - height), left.x + 3 * fifthWidth + ' ' + (left.y - height), left.x + width / 2 + ' ' + (left.y - height / 2), left.x + width + ' ' + (left.y - height / 2), left.x + fifthWidth + ' ' + (left.y + height), left.x + 2 * fifthWidth + ' ' + left.y]).attr('fill', _colours.colours.yellow);
-	  }
-
-	  function drawSnowflake(centre, radius) {
-	    var innerRadius = radius / 2;
-
-	    var numSnowflakeParts = 6;
-	    Array(numSnowflakeParts).fill().forEach(function (_, i) {
-	      return buildSnowflakePart(centre, innerRadius, innerRadius).attr('transform', 'rotate(' + i * 360 / numSnowflakeParts + ', ' + centre.x + ', ' + centre.y + ')').attr('fill', _colours.colours.white);
-	    });
-	  };
-
-	  function buildSnowflakePart(centre, radius, height) {
-	    var point = {
-	      x: centre.x,
-	      y: centre.y
-	    };
-
-	    var halfWidth = height / 3;
-
-	    return svg.append('rect').attr({
-	      x: point.x - halfWidth,
-	      y: point.y,
-	      width: halfWidth * 2,
-	      height: height * 2
-	    });
 	  };
 	}
 
@@ -9913,6 +9890,50 @@ var WeatherIcon =
 	    return (0, _svgUtils.drawCircle)(centre, _dimensions.raindrop.radius)(svg).attr('fill', _colours.colours.white);
 	  };
 	}
+
+/***/ },
+/* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.drawSnowflake = drawSnowflake;
+
+	var _colours = __webpack_require__(2);
+
+	var _dimensions = __webpack_require__(3);
+
+	var _svgUtils = __webpack_require__(5);
+
+	function drawSnowflake(centre) {
+	  return function (svg) {
+	    return drawSnowflakeUncurried(centre, svg);
+	  };
+	}
+
+	var radius = _dimensions.raindrop.radius * 1.2;
+	var innerRadius = radius / 2;
+	var numSnowflakeParts = 6;
+
+	function drawSnowflakeUncurried(centre, svg) {
+	  return Array(numSnowflakeParts).fill().map(function (_, i) {
+	    return buildSnowflakePart(centre, innerRadius, innerRadius, svg).attr('transform', 'rotate(' + i * 360 / numSnowflakeParts + ', ' + centre.x + ', ' + centre.y + ')').attr('fill', _colours.colours.white);
+	  });
+	};
+
+	function buildSnowflakePart(centre, radius, height, svg) {
+	  var halfWidth = height / 3;
+
+	  return svg.append('rect').attr({
+	    x: centre.x - halfWidth,
+	    y: centre.y,
+	    width: halfWidth * 2,
+	    height: height * 2
+	  });
+	};
 
 /***/ }
 /******/ ]);
