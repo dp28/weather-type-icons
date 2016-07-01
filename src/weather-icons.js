@@ -18,7 +18,7 @@ export function draw(weatherType, selector) {
 function drawOn(weatherType, svg) {
   [
     drawSun(suns.small),
-    drawCloud(colours.darkGrey),
+    drawCloud(),
     drawRaindrop(precipitation.firstPoint),
     drawHail(precipitation.secondPoint),
     drawLightning()
