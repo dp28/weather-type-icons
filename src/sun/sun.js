@@ -1,8 +1,44 @@
-import {drawCircle} from '../utils/svg-utils';
-import {colours}    from '../colours';
+import {CloudLevel, PrecipitationDuration, PrecipitationLevel} from 'weather-type';
 
-export function drawSun(sun) {
-  return svg => drawSunUncurried(sun, svg);
+import {width, height} from '../dimensions';
+import {drawCircle}    from '../utils/svg-utils';
+import {colours}       from '../colours';
+
+export function drawSun() {
+  return drawSunFromWeatherType;
+}
+
+const centre = { x: width / 2, y: height / 2 };
+
+export const smallSun = {
+  radius:         15,
+  centre:         { x: centre.x + 22, y: centre.y - 25 },
+  sunburstRadius: 22
+};
+
+export const largeSun = {
+  radius:         24,
+  centre:         centre,
+  sunburstRadius: 38
+};
+
+function drawSunFromWeatherType(svg, weatherType) {
+  const sun = getSun(weatherType);
+  if (sun)
+    return drawSunUncurried(sun, svg);
+}
+
+function getSun(weather) {
+  if (weather.clouds.level === CloudLevel.Clear)
+    return largeSun;
+  if (showSmallSun(weather))
+    return smallSun;
+}
+
+function showSmallSun(weather) {
+  return weather.clouds.level === CloudLevel.Broken ||
+    (weather.precipitation.duration === PrecipitationDuration.Showers
+      && weather.precipitation.level > PrecipitationLevel.None)
 }
 
 const sunburstNumber = 12;

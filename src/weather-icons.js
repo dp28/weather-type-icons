@@ -6,7 +6,6 @@ import * as precipitation from './precipitation/precipitation-dimensions';
 import {drawRaindrop}     from './precipitation/raindrop';
 import {drawHail}         from './precipitation/hail';
 import {drawSnowflake}    from './precipitation/snowflake';
-import * as suns          from './sun/sun-dimensions';
 import {drawSun}          from './sun/sun';
 import {drawCloud}        from './cloud/cloud';
 import {drawLightning}    from './lightning/lightning';
@@ -17,7 +16,7 @@ export function draw(weatherType, selector) {
 
 function drawOn(weatherType, svg) {
   [
-    drawSun(suns.small),
+    drawSun(),
     drawCloud(),
     drawRaindrop(precipitation.firstPoint),
     drawHail(precipitation.secondPoint),
