@@ -3,7 +3,11 @@ import {raindropRadius} from './precipitation-dimensions';
 import {drawCircle}     from '../utils/svg-utils';
 
 export function drawSnowflake(centre) {
-  return svg => drawSnowflakeUncurried(centre, svg);
+  return svg => {
+    const group = svg.append('g').attr({ class: 'snowflake', fill: colours.white });
+    drawSnowflakeUncurried(centre, group);
+    return group;
+  };
 }
 
 const radius            = raindropRadius * 1.2;
@@ -14,7 +18,6 @@ function drawSnowflakeUncurried(centre, svg) {
   return Array(numSnowflakeParts).fill().map((_, i) => (
     buildSnowflakePart(centre, innerRadius, innerRadius, svg)
       .attr('transform', `rotate(${i * 360 / numSnowflakeParts}, ${centre.x}, ${centre.y})`)
-      .attr('fill', colours.white)
   ));
 };
 

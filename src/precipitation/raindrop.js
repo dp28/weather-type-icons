@@ -3,15 +3,16 @@ import {raindropRadius as radius} from './precipitation-dimensions';
 import {drawCircle}               from '../utils/svg-utils';
 
 export function drawRaindrop(centre) {
-  return svg => drawRaindropUncurried(centre, svg);
+  return svg => {
+    const group = svg.append('g').attr({ class: 'raindrop', fill: colours.blue });
+    drawRaindropUncurried(centre, group);
+    return group;
+  };
 }
 
 function drawRaindropUncurried(centre, svg) {
-  const parts = [
-    drawCircle(centre, radius)(svg),
-    drawTail(centre, svg)
-  ];
-  return parts.map(part => part.attr('fill', colours.blue));
+  drawCircle(centre, radius)(svg);
+  drawTail(centre, svg);
 }
 
 function drawTail(raindropCentre, svg) {

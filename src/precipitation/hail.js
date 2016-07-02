@@ -4,6 +4,7 @@ import {drawCircle}     from '../utils/svg-utils';
 
 export function drawHail(centre) {
   return svg => (
-    drawCircle(centre, raindropRadius)(svg).attr('fill', colours.white)
+    drawCircle(centre, raindropRadius)(svg)
+      .attr({ fill: colours.white, class: 'hail' })
   );
 }

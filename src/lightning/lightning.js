@@ -19,12 +19,14 @@ const points = [
   `${left.x + width / 2} ${left.y - height / 2}`,
   `${left.x + width} ${left.y - height / 2}`,
   `${left.x + fifthWidth} ${left.y + height}`,
-  `${left.x + 2 * fifthWidth} ${left.y}`
+  `${left.x + 2 * fifthWidth} ${left.y}`,
+  `${left.x} ${left.y}`
 ]
 
 const attributes = {
   points: points,
-  fill:   colours.yellow
+  fill:   colours.yellow,
+  class:  'lightning'
 }
 
 export function drawLightning(weatherType, svg) {

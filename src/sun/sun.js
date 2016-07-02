@@ -6,8 +6,10 @@ import {colours}       from '../colours';
 
 export function drawSun(weatherType, svg) {
   const sun = getSun(weatherType);
-  if (sun)
-    return drawSunUncurried(sun, svg);
+  if (sun) {
+    const group = svg.append('g').attr( { fill: colours.yellow, class: 'sun' });
+    return drawSunUncurried(sun, group);
+  }
 }
 
 const centre = { x: width / 2, y: height / 2 };
@@ -40,7 +42,7 @@ function showSmallSun(weather) {
 const sunburstNumber = 12;
 
 function drawSunUncurried(sun, svg) {
-  const circle = drawCircle(sun.centre, sun.radius)(svg).attr('fill', colours.yellow);
+  const circle = drawCircle(sun.centre, sun.radius)(svg);
   const bursts = buildSunbursts(sun, svg);
   return [circle, ...bursts];
 }
@@ -64,7 +66,6 @@ function buildSunburst({ centre, radius, sunburstRadius }, svg) {
     x: sunburstPoint.x - halfSunburstWidth,
     y: sunburstPoint.y - halfSunburstWidth,
     width: halfSunburstWidth * 2,
-    height: sunburstRadius - radius,
-    fill: colours.yellow
+    height: sunburstRadius - radius
   });
 };
