@@ -6,12 +6,13 @@ import {drawPrecipitation} from './precipitation/precipitation';
 import {drawSun}           from './sun/sun';
 import {drawCloud}         from './cloud/cloud';
 import {drawLightning}     from './lightning/lightning';
+import {applyAll}          from './utils/functional';
 
-const partDrawingFunctions = [ drawSun, drawCloud, drawPrecipitation, drawLightning ];
+const drawOn = applyAll(drawSun, drawCloud, drawPrecipitation, drawLightning);
 
 export function draw(weatherType, selector) {
   const rootElement = buildRootElement(selector);
-  partDrawingFunctions.forEach(drawPart => drawPart(weatherType, rootElement));
+  drawOn(weatherType, rootElement);
 }
 
 const rootElementAttributes = {
