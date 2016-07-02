@@ -1,8 +1,11 @@
 import {CloudLevel} from 'weather-type';
 
-import {colours}       from '../colours';
-import {circles, rect} from './cloud-dimensions';
-import {drawCircle}    from '../utils/svg-utils';
+import {colours}              from '../colours';
+import {circles, rect}        from './cloud-dimensions';
+import {drawCircle, drawText} from '../utils/svg-utils';
+
+export const drawFog  = drawText('FOG');
+export const drawMist = drawText('MIST');
 
 export function drawCloud(weatherType, svg) {
   const colour = getCloudColour(weatherType);
