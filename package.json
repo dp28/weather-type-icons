@@ -6,7 +6,7 @@
   "scripts": {
     "prepublish": "webpack",
     "watch:compile": "webpack --watch",
-    "watch:test": "cd graphical-test && webpack --watch"
+    "watch:test": "webpack --watch --config ./graphical-test/webpack.config.js"
   },
   "repository": {
     "type": "git",
