@@ -1,5 +1,3 @@
-import {CloudLevel, PrecipitationDuration, PrecipitationLevel} from 'weather-type';
-
 import {width, height} from '../dimensions';
 import {drawCircle}    from '../utils/svg-utils';
 import {colours}       from '../colours';
@@ -27,16 +25,14 @@ export const largeSun = {
 };
 
 function getSun(weather) {
-  if (weather.clouds.level === CloudLevel.Clear)
+  if (weather.clouds.isClear())
     return largeSun;
   if (showSmallSun(weather))
     return smallSun;
 }
 
-function showSmallSun(weather) {
-  return weather.clouds.level === CloudLevel.Broken ||
-    (weather.precipitation.duration === PrecipitationDuration.Showers
-      && weather.precipitation.level > PrecipitationLevel.None)
+function showSmallSun({ clouds, precipitation }) {
+  return clouds.isBroken() || (precipitation.isApplicable() && precipitation.isShowers());
 }
 
 const sunburstNumber = 12;

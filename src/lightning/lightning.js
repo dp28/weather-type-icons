@@ -1,5 +1,3 @@
-import {StormLevel} from 'weather-type';
-
 import {colours}               from '../colours';
 import {centre as cloudCentre} from '../cloud/cloud-dimensions';
 
@@ -29,7 +27,7 @@ const attributes = {
   class:  'lightning'
 }
 
-export function drawLightning(weatherType, svg) {
-  if (weatherType.storm.level === StormLevel.Thunderstorm)
+export function drawLightning({ storm }, svg) {
+  if (storm.isApplicable())
     return svg.append('polyline').attr(attributes);
 }

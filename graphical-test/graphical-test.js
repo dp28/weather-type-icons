@@ -2,10 +2,6 @@ import WeatherType from 'weather-type';
 
 import {draw} from '../dist/weather-icons';
 
-console.log(WeatherType);
-import * as allWeatherTypeExports from 'weather-type';
-console.log(allWeatherTypeExports);
-
 const codes = [
   'thunderstorm',
   'heavy_hail',
@@ -44,6 +40,5 @@ codes.forEach(code => {
   listItem.appendChild(iconDiv);
   listItem.appendChild(textDiv);
   textDiv.textContent = code;
-  console.log(code, WeatherType.fromString(code).value);
   draw(WeatherType.fromString(code).value, `#${code}`);
 });

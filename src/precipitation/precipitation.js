@@ -1,14 +1,20 @@
-import {PrecipitationLevel, PrecipitationDuration, PrecipitationType} from 'weather-type';
+import {PrecipitationType} from 'weather-type';
 
 import {firstPoint, secondPoint} from './precipitation-dimensions';
 import {drawRaindrop}            from './raindrop';
 import {drawHail}                from './hail';
 import {drawSnowflake}           from './snowflake';
 
+const drawingFunctions = {
+  [PrecipitationType.Rain]: drawRaindrop,
+  [PrecipitationType.Hail]: drawHail,
+  [PrecipitationType.Snow]: drawSnowflake
+}
+
 export function drawPrecipitation({ precipitation }, svg) {
-  if (precipitation.level === PrecipitationLevel.None)
+  if (!precipitation.isApplicable())
     return;
-  if (precipitation.type === PrecipitationType.Sleet)
+  if (precipitation.isSleet())
     return drawSleet(svg);
   return drawPrecipitationParts(svg, precipitation);
 }
@@ -19,16 +25,8 @@ function drawSleet(svg) {
 }
 
 function drawPrecipitationParts(svg, precipitation) {
-  const drawPart = selectDrawingFunction(precipitation);
-  if (precipitation.level === PrecipitationLevel.Heavy)
+  const drawPart = drawingFunctions[precipitation.type];
+  if (precipitation.isHeavy())
     drawPart(secondPoint)(svg);
   drawPart(firstPoint)(svg);
-}
-
-function selectDrawingFunction(precipitation) {
-  switch(precipitation.type) {
-    case PrecipitationType.Rain: return drawRaindrop;
-    case PrecipitationType.Hail: return drawHail;
-    default:                     return drawSnowflake;
-  }
 }

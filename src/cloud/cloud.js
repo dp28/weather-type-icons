@@ -22,10 +22,9 @@ function drawColouredCloud(colour, svg) {
   return [cloudRect, ...cloudCircles];
 }
 
-function getCloudColour(weatherType) {
-  const level = weatherType.clouds.level;
-  if (level === CloudLevel.Broken || level === CloudLevel.Light)
+function getCloudColour({ clouds }) {
+  if (clouds.isBroken() || clouds.isLight())
     return colours.lightGrey;
-  if (level === CloudLevel.Heavy)
+  if (clouds.isHeavy())
     return colours.darkGrey;
 }
