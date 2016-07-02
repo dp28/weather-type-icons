@@ -5,7 +5,7 @@ import {drawRaindrop}            from './raindrop';
 import {drawHail}                from './hail';
 import {drawSnowflake}           from './snowflake';
 
-export function drawPrecipitation(svg, { precipitation }) {
+export function drawPrecipitation({ precipitation }, svg) {
   if (precipitation.level === PrecipitationLevel.None)
     return;
   if (precipitation.type === PrecipitationType.Sleet)

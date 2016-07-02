@@ -4,11 +4,7 @@ import {colours}       from '../colours';
 import {circles, rect} from './cloud-dimensions';
 import {drawCircle}    from '../utils/svg-utils';
 
-export function drawCloud(colour) {
-  return drawCloudFromWeatherType;
-}
-
-function drawCloudFromWeatherType(svg, weatherType) {
+export function drawCloud(weatherType, svg) {
   const colour = getCloudColour(weatherType);
   if (colour)
     return drawColouredCloud(colour, svg);

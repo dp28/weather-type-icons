@@ -7,17 +7,11 @@ import {drawSun}           from './sun/sun';
 import {drawCloud}         from './cloud/cloud';
 import {drawLightning}     from './lightning/lightning';
 
-export function draw(weatherType, selector) {
-  drawOn(weatherType, buildRootElement(selector));
-}
+const partDrawingFunctions = [ drawSun, drawCloud, drawPrecipitation, drawLightning ];
 
-function drawOn(weatherType, svg) {
-  [
-    drawSun(),
-    drawCloud(),
-    drawPrecipitation,
-    drawLightning()
-  ].forEach(drawComponent => drawComponent(svg, weatherType));
+export function draw(weatherType, selector) {
+  const rootElement = buildRootElement(selector);
+  partDrawingFunctions.forEach(drawPart => drawPart(weatherType, rootElement));
 }
 
 const rootElementAttributes = {

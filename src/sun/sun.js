@@ -4,8 +4,10 @@ import {width, height} from '../dimensions';
 import {drawCircle}    from '../utils/svg-utils';
 import {colours}       from '../colours';
 
-export function drawSun() {
-  return drawSunFromWeatherType;
+export function drawSun(weatherType, svg) {
+  const sun = getSun(weatherType);
+  if (sun)
+    return drawSunUncurried(sun, svg);
 }
 
 const centre = { x: width / 2, y: height / 2 };
@@ -21,12 +23,6 @@ export const largeSun = {
   centre:         centre,
   sunburstRadius: 38
 };
-
-function drawSunFromWeatherType(svg, weatherType) {
-  const sun = getSun(weatherType);
-  if (sun)
-    return drawSunUncurried(sun, svg);
-}
 
 function getSun(weather) {
   if (weather.clouds.level === CloudLevel.Clear)
