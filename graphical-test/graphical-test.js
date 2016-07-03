@@ -1,6 +1,6 @@
 import WeatherType from 'weather-type';
 
-import {draw} from '../dist/weather-icons';
+import {draw} from '../dist/weather-type-icons';
 
 const codes = [
   'Clear',

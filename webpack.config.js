@@ -1,7 +1,7 @@
 module.exports = {
-  entry: './src/weather-icons.js',
+  entry: './src/weather-type-icons.js',
   output: {
-    filename: './dist/weather-icons.js',
+    filename: './dist/weather-type-icons.js',
     libraryTarget: 'umd'
   },
   module: {
