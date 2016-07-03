@@ -1,6 +1,6 @@
 {
   "name": "weather-type-icons",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Generate weather icon SVGs from WeatherTypes",
   "main": "dist/weather-type-icons.js",
   "scripts": {
